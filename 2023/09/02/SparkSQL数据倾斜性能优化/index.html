@@ -4,14 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>Seethy&#39;s Blog</title>
+  <title>SparkSQL数据倾斜性能优化 | Seethy&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Seethy&#39;s Blog">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="背景：国内某大牌运营商话单数据量比较大，大概一天2T左右话单，标准话单一个小时需要处理9KW左右的话单量，标准话单处理任务在执行30分钟左右，报“too large frame”或者”Size exceeds Integer.MAX_VALUE”错误，无法正常生成标准话单数据。1小时任务处理数据量：OTT话单 ：9KW8303话单：无内容数据：1千万节目数据：无用户数据：7百万栏目：3频道数据：无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SparkSQL数据倾斜性能优化">
+<meta property="og:url" content="http://example.com/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
 <meta property="og:site_name" content="Seethy&#39;s Blog">
+<meta property="og:description" content="背景：国内某大牌运营商话单数据量比较大，大概一天2T左右话单，标准话单一个小时需要处理9KW左右的话单量，标准话单处理任务在执行30分钟左右，报“too large frame”或者”Size exceeds Integer.MAX_VALUE”错误，无法正常生成标准话单数据。1小时任务处理数据量：OTT话单 ：9KW8303话单：无内容数据：1千万节目数据：无用户数据：7百万栏目：3频道数据：无">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-02T02:49:59.000Z">
+<meta property="article:modified_time" content="2023-09-03T02:20:32.351Z">
 <meta property="article:author" content="Seethy">
+<meta property="article:tag" content="sparksql">
+<meta property="article:tag" content="数据倾斜">
+<meta property="article:tag" content="性能优化">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Seethy's Blog" type="application/atom+xml">
@@ -71,9 +78,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-SparkSQL数据倾斜性能优化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-SparkSQL数据倾斜性能优化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="article-date">
   <time class="dt-published" datetime="2023-09-02T02:49:59.000Z" itemprop="datePublished">2023-09-02</time>
@@ -90,8 +95,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">SparkSQL数据倾斜性能优化</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      SparkSQL数据倾斜性能优化
     </h1>
   
 
@@ -124,116 +129,19 @@
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-volatile" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/08/27/volatile/" class="article-date">
-  <time class="dt-published" datetime="2023-08-27T13:01:30.000Z" itemprop="datePublished">2023-08-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a>►<a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a>►<a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/08/27/volatile/">volatile</a>
-    </h1>
+    <a href="/2023/08/27/volatile/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">volatile</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>volatile 是一个类型修饰符。volatile 的作用是作为指令关键字，确保本条指令不会因编译器的优化而省略</p>
-<p><strong>volatile 的特性</strong></p>
-<ol>
-<li><p>保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。（实现可见性）</p>
-</li>
-<li><p>禁止进行指令重排序。（实现有序性）</p>
-</li>
-<li><p>volatile 只能保证对单次读&#x2F;写的原子性。i++ 这种操作不能保证原子性。关于volatile 原子性可以理解为把对volatile变量的单个读&#x2F;写，看成是使用同一个锁对这些单个读&#x2F;写操作做了同步。</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/08/27/volatile/" data-id="cllti4aul0001gsvobl3i1c15" data-title="volatile" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JAVA/" rel="tag">JAVA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/08/12/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2023-08-12T07:58:56.899Z" itemprop="datePublished">2023-08-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/08/12/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/08/12/hello-world/" data-id="cllti4au70000gsvoay9q2498" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
 </section>
