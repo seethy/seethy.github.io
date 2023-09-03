@@ -23,17 +23,20 @@ OTT话单 ：9KW
 **根因分析：**
 spark任务报这2个错，主要是发生在shuffle阶段，因为Spark对每个partition所能包含的数据大小有写死的限制（约为2G），当某个partition包含超过此限制的数据时，就会抛出这类异常。
 造成此异常的主要原因有:
+
   1. 源数据太多，partition分区数太少，导致分配到每个partition上的数据量过多，超过阈值。
   2. 数据倾斜，某列的数据分布不均衡，当某个shuffle操作是根据此列数据进行shuffle时，就会造成整个数据集发生倾斜，即某几个partition包含了大量数据，并且其数据大小超过了Spark的限制，而其他partition只包含很少的数据。
+
 **解决方案：**
   1. 通过调整spark.sql.shuffle.partitions，增加分区数。
   2. 消除数据倾斜。
 spark join主要有以下两种方式：
-1) Broadcast Hash Join ：当其中一个数据集足够小时，采用Broadcast Hash Join，较小的数据集会被广播到所有Spark的executor上，并转化为一个Hash Table，之后较大数据集的各个分区会在各executor上与Hash Table进行本地的Join，各分区Join的结果合并为最终结果。
+a) Broadcast Hash Join ：当其中一个数据集足够小时，采用Broadcast Hash Join，较小的数据集会被广播到所有Spark的executor上，并转化为一个Hash Table，之后较大数据集的各个分区会在各executor上与Hash Table进行本地的Join，各分区Join的结果合并为最终结果。
 Broadcast Hash Join 没有Shuffle阶段、效率最高。但为了保证可靠性，executor必须有足够的内存能放得下被广播的数据集，所以当进两个数据集的大小都超过一个可配置的阈值之后，Spark不会采用这种Join。控制这个阈值的参数为spark.sql.autoBroadcastJoinThreshold, 中默认值为10M。
-2) Sort Merge Join:  将key相同的记录重分配同一个executor上，不同的是，在每个executor上，不再构造哈希表，而是对两个分区进行排序，然后用两个下标同时遍历两个分区，如果两个下标指向的记录key相同，则输出这两条记录，否则移动key较小的下标。
+b) Sort Merge Join:  将key相同的记录重分配同一个executor上，不同的是，在每个executor上，不再构造哈希表，而是对两个分区进行排序，然后用两个下标同时遍历两个分区，如果两个下标指向的记录key相同，则输出这两条记录，否则移动key较小的下标。
 Sort Merge Join也有Shuffle阶段，因此效率同样不如Broadcast Hash Join。在内存使用方面，因为不需要构造哈希表，需要的内存比Hash Join要少。
 所以数据倾斜一般发生在sort merge join过程，大表跟大表关联一般建议使用sort merge join，大表的数据倾斜，可以采用将倾斜键*随机数(比如100以内的随机数), 另外一个表对应的键*100这种以空间换效率的方式； 大表跟小表关联，一般建议将小表cache, 然后通过broadcast的方式分发到各executor中提高处理性能，而且也可以避免数据倾斜的情况。
+
 **排查和优化过程：**
 因为话单原始数据量比较大，一开始怀疑默认分区数200不够，调大到1000，spark.sql.shuffle.partitions=1000，问题没有解决。
 检查报错的spark sql语句，主要集中在 OTT话单同时左关联用户数据（通过usercode字段字段关联），内容数据（通过contentcode字段关联），栏目数据（通过columncode字段关联），产品信息（通过productcode字段关联）这4个数据表，通过分析spark UI 的任务执行情况，确定应该是发生数据倾斜。
