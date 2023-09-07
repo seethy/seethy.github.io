@@ -4,14 +4,20 @@
   <meta charset="utf-8">
   
   
-  <title>Archiv: 2023/9 | Seethy&#39;s Blog</title>
+  <title>HDFS特性 | Seethy&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Seethy&#39;s Blog">
-<meta property="og:url" content="http://example.com/archives/2023/09/index.html">
+  <meta name="description" content="优点：　 1、高容错性  数据自动保存多个副本。它通过增加副本的形式，提高容错性。 某一个副本丢失以后，它可以自动恢复，这是由 HDFS 内部机制实现的，我们不必关心。  2、适合批处理  它是通过移动计算而不是移动数据。 它会把数据位置暴露给计算框架。  3、适合大数据处理  处理数据达到 GB、TB、甚至PB级别的数据。 能够处理百万规模以上的文件数量，数量相当之大。 能够处理10K节点的规模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HDFS特性">
+<meta property="og:url" content="http://example.com/2023/09/07/HDFS%E7%89%B9%E6%80%A7/index.html">
 <meta property="og:site_name" content="Seethy&#39;s Blog">
+<meta property="og:description" content="优点：　 1、高容错性  数据自动保存多个副本。它通过增加副本的形式，提高容错性。 某一个副本丢失以后，它可以自动恢复，这是由 HDFS 内部机制实现的，我们不必关心。  2、适合批处理  它是通过移动计算而不是移动数据。 它会把数据位置暴露给计算框架。  3、适合大数据处理  处理数据达到 GB、TB、甚至PB级别的数据。 能够处理百万规模以上的文件数量，数量相当之大。 能够处理10K节点的规模">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-07T14:15:00.000Z">
+<meta property="article:modified_time" content="2023-09-07T14:18:43.121Z">
 <meta property="article:author" content="Seethy">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="HDFS">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Seethy's Blog" type="application/atom+xml">
@@ -71,96 +77,101 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/09/07/HDFS%E7%89%B9%E6%80%A7/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-09-07T14:15:00.000Z" itemprop="datePublished">9月 7</time>
+        <section id="main"><article id="post-HDFS特性" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/09/07/HDFS%E7%89%B9%E6%80%A7/" class="article-date">
+  <time class="dt-published" datetime="2023-09-07T14:15:00.000Z" itemprop="datePublished">2023-09-07</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BB%84%E4%BB%B6%E6%9C%8D%E5%8A%A1/">组件服务</a>►<a class="article-category-link" href="/categories/%E7%BB%84%E4%BB%B6%E6%9C%8D%E5%8A%A1/HDFS/">HDFS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/09/07/HDFS%E7%89%B9%E6%80%A7/">HDFS特性</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      HDFS特性
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/09/03/GO%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91-%E7%A6%BB%E7%BA%BF%E7%BC%96%E8%AF%91/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-09-03T12:51:34.000Z" itemprop="datePublished">9月 3</time>
-</a>
+    <div class="e-content article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/09/03/GO%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91-%E7%A6%BB%E7%BA%BF%E7%BC%96%E8%AF%91/">GO本地编译&amp;&amp;离线编译</a>
-    </h1>
-  
+        <p><strong>优点：</strong>　</p>
+<p>1、高容错性</p>
+<ul>
+<li>数据自动保存多个副本。它通过增加副本的形式，提高容错性。</li>
+<li>某一个副本丢失以后，它可以自动恢复，这是由 HDFS 内部机制实现的，我们不必关心。</li>
+</ul>
+<p>2、适合批处理</p>
+<ul>
+<li>它是通过移动计算而不是移动数据。</li>
+<li>它会把数据位置暴露给计算框架。</li>
+</ul>
+<p>3、适合大数据处理</p>
+<ul>
+<li>处理数据达到 GB、TB、甚至PB级别的数据。</li>
+<li>能够处理百万规模以上的文件数量，数量相当之大。</li>
+<li>能够处理10K节点的规模。</li>
+</ul>
+<p>4、流式文件访问</p>
+<ul>
+<li>一次写入，多次读取。文件一旦写入不能修改，只能追加。</li>
+<li>它能保证数据的一致性。</li>
+</ul>
+<p>5、可构建在廉价机器上</p>
+<ul>
+<li>它通过多副本机制，提高可靠性。</li>
+<li>它提供了容错和恢复机制。比如某一个副本丢失，可以通过其它副本来恢复。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<p>1、低延时数据访问</p>
+<ul>
+<li>比如毫秒级的来存储数据，这是不行的，它做不到。</li>
+<li>它适合高吞吐率的场景，就是在某一时间内写入大量的数据。但是它在低延时的情况下是不行的，比如毫秒级以内读取数据，这样它是很难做到的。</li>
+</ul>
+<p>2、小文件存储</p>
+<ul>
+<li>存储大量小文件(这里的小文件是指小于HDFS系统的Block大小的文件（默认64M）)的话，它会占用 NameNode大量的内存来存储文件、目录和块信息。这样是不可取的，因为NameNode的内存总是有限的。</li>
+<li>小文件存储的寻道时间会超过读取时间，它违反了HDFS的设计目标。</li>
+</ul>
+<p>3、并发写入、文件随机修改</p>
+<ul>
+<li>一个文件只能有一个写，不允许多个线程同时写。</li>
+<li>仅支持数据 append（追加），不支持文件的随机修改。</li>
+</ul>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-09-03T12:21:37.000Z" itemprop="datePublished">9月 3</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/">解决git:filename too long报错</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-09-02T02:49:59.000Z" itemprop="datePublished">9月 2</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/07/HDFS%E7%89%B9%E6%80%A7/" data-id="clm998cr3000378vo2ufl1wyo" data-title="HDFS特性" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">SparkSQL数据倾斜性能优化</a>
-    </h1>
-  
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HDFS/" rel="tag">HDFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
 
-    </header>
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/09/03/GO%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91-%E7%A6%BB%E7%BA%BF%E7%BC%96%E8%AF%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">GO本地编译&amp;&amp;离线编译</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>

@@ -3,6 +3,127 @@
   
     
     <entry>
+      <title><![CDATA[HDFS特性]]></title>
+      <url>/2023/09/07/HDFS%E7%89%B9%E6%80%A7/</url>
+      <content type="html"><![CDATA[<p><strong>优点：</strong>　</p>
+<p>1、高容错性</p>
+<ul>
+<li>数据自动保存多个副本。它通过增加副本的形式，提高容错性。</li>
+<li>某一个副本丢失以后，它可以自动恢复，这是由 HDFS 内部机制实现的，我们不必关心。</li>
+</ul>
+<p>2、适合批处理</p>
+<ul>
+<li>它是通过移动计算而不是移动数据。</li>
+<li>它会把数据位置暴露给计算框架。</li>
+</ul>
+<p>3、适合大数据处理</p>
+<ul>
+<li>处理数据达到 GB、TB、甚至PB级别的数据。</li>
+<li>能够处理百万规模以上的文件数量，数量相当之大。</li>
+<li>能够处理10K节点的规模。</li>
+</ul>
+<p>4、流式文件访问</p>
+<ul>
+<li>一次写入，多次读取。文件一旦写入不能修改，只能追加。</li>
+<li>它能保证数据的一致性。</li>
+</ul>
+<p>5、可构建在廉价机器上</p>
+<ul>
+<li>它通过多副本机制，提高可靠性。</li>
+<li>它提供了容错和恢复机制。比如某一个副本丢失，可以通过其它副本来恢复。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<p>1、低延时数据访问</p>
+<ul>
+<li>比如毫秒级的来存储数据，这是不行的，它做不到。</li>
+<li>它适合高吞吐率的场景，就是在某一时间内写入大量的数据。但是它在低延时的情况下是不行的，比如毫秒级以内读取数据，这样它是很难做到的。</li>
+</ul>
+<p>2、小文件存储</p>
+<ul>
+<li>存储大量小文件(这里的小文件是指小于HDFS系统的Block大小的文件（默认64M）)的话，它会占用 NameNode大量的内存来存储文件、目录和块信息。这样是不可取的，因为NameNode的内存总是有限的。</li>
+<li>小文件存储的寻道时间会超过读取时间，它违反了HDFS的设计目标。</li>
+</ul>
+<p>3、并发写入、文件随机修改</p>
+<ul>
+<li>一个文件只能有一个写，不允许多个线程同时写。</li>
+<li>仅支持数据 append（追加），不支持文件的随机修改。</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 组件服务 </category>
+            
+            <category> HDFS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 大数据 </tag>
+            
+            <tag> HDFS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[GO本地编译&&离线编译]]></title>
+      <url>/2023/09/03/GO%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91-%E7%A6%BB%E7%BA%BF%E7%BC%96%E8%AF%91/</url>
+      <content type="html"><![CDATA[<ol>
+<li>设置环境变量:<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOROOT=/home/go</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$GOROOT</span>/bin</span><br></pre></td></tr></table></figure>
+打开本地代理（在线，可以下载依赖的module）<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go <span class="built_in">env</span> -w GO111MODULE=on</span><br><span class="line">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span><br></pre></td></tr></table></figure>
+将本地下载的go module $GOROOT&#x2F;bin&#x2F;pkg 拷贝到离线服务器的 $GOROOT&#x2F;bin&#x2F;pkg 下<br>在离线服务器上设置<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go <span class="built_in">env</span> -w GOPROXY=file:///<span class="variable">$GOROOT</span>/bin/pkg/mod/cache/download</span><br></pre></td></tr></table></figure></li>
+<li>编译命令：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go build -o sql_exporter main.go</span><br><span class="line"><span class="comment"># alpine环境下运行编译命令</span></span><br><span class="line"><span class="comment"># alpine环境下运行需要go env -w CGO_ENABLED=0</span></span><br><span class="line">CGO_ENABLED=0 go build -o sql_exporter main.go</span><br></pre></td></tr></table></figure>
+关闭安全性校验： go env -w GOSUMDB&#x3D;off</li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> 编程语言 </category>
+            
+            <category> GO </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Go编译 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[解决git:filename too long报错]]></title>
+      <url>/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/</url>
+      <content type="html"><![CDATA[<p>git config –global core.longpaths true</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 组件服务 </category>
+            
+            <category> git </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> git </tag>
+            
+            <tag> 故障排查 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[SparkSQL数据倾斜性能优化]]></title>
       <url>/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</url>
       <content type="html"><![CDATA[<p><strong>背景：</strong><br>国内某大牌运营商话单数据量比较大，大概一天2T左右话单，标准话单一个小时需要处理9KW左右的话单量，标准话单处理任务在执行30分钟左右，报“too large frame”或者”Size exceeds Integer.MAX_VALUE”错误，无法正常生成标准话单数据。<br><strong>1小时任务处理数据量：</strong><br>OTT话单 ：9KW<br>8303话单：无<br>内容数据：1千万<br>节目数据：无<br>用户数据：7百万<br>栏目：3<br>频道数据：无<br>节目单，tvod: 无<br>产品信息：100<br><strong>根因分析：</strong><br>spark任务报这2个错，主要是发生在shuffle阶段，因为Spark对每个partition所能包含的数据大小有写死的限制（约为2G），当某个partition包含超过此限制的数据时，就会抛出这类异常。<br>造成此异常的主要原因有:</p>
