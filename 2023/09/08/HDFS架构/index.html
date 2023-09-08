@@ -4,15 +4,23 @@
   <meta charset="utf-8">
   
   
-  <title>Kategorie: JAVA | Seethy&#39;s Blog</title>
+  <title>HDFS架构 | Seethy&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Seethy&#39;s Blog">
-<meta property="og:url" content="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/index.html">
+  <meta name="description" content="​     　　　　　　　　　　　　　　　　　　HDFS的架构图 　　HDFS 采用Master&#x2F;Slave的架构来存储数据，这种架构主要由四个部分组成，分别为HDFS Client、NameNode、DataNode和Secondary NameNode。下面我们分别介绍这四个组成部分   　　1、Client：就是客户端。  文件切分。文件上传 HDFS 的时候，Client">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HDFS架构">
+<meta property="og:url" content="http://example.com/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/index.html">
 <meta property="og:site_name" content="Seethy&#39;s Blog">
+<meta property="og:description" content="​     　　　　　　　　　　　　　　　　　　HDFS的架构图 　　HDFS 采用Master&#x2F;Slave的架构来存储数据，这种架构主要由四个部分组成，分别为HDFS Client、NameNode、DataNode和Secondary NameNode。下面我们分别介绍这四个组成部分   　　1、Client：就是客户端。  文件切分。文件上传 HDFS 的时候，Client">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/HDFS%E6%9E%B6%E6%9E%84.jpeg">
+<meta property="article:published_time" content="2023-09-08T11:48:51.000Z">
+<meta property="article:modified_time" content="2023-09-08T12:08:16.726Z">
 <meta property="article:author" content="Seethy">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="HDFS">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/HDFS%E6%9E%B6%E6%9E%84.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="Seethy's Blog" type="application/atom+xml">
   
@@ -71,39 +79,88 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/08/27/volatile/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-08-27T13:01:30.000Z" itemprop="datePublished">8月 27</time>
+        <section id="main"><article id="post-HDFS架构" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/" class="article-date">
+  <time class="dt-published" datetime="2023-09-08T11:48:51.000Z" itemprop="datePublished">2023-09-08</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BB%84%E4%BB%B6%E6%9C%8D%E5%8A%A1/">组件服务</a>►<a class="article-category-link" href="/categories/%E7%BB%84%E4%BB%B6%E6%9C%8D%E5%8A%A1/HDFS/">HDFS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/08/27/volatile/">volatile</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      HDFS架构
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>　　</p>
+<p>​    <img src="/images/HDFS%E6%9E%B6%E6%9E%84.jpeg" alt="HDFS架构图"></p>
+<p>　　　　　　　　　　　　　　　　　　HDFS的架构图</p>
+<p>　　HDFS 采用Master&#x2F;Slave的架构来存储数据，这种架构主要由四个部分组成，分别为HDFS Client、NameNode、DataNode和Secondary NameNode。下面我们分别介绍这四个组成部分  </p>
+<p>　　<strong>1、Client：就是客户端。</strong></p>
+<ul>
+<li>文件切分。文件上传 HDFS 的时候，Client 将文件切分成 一个一个的Block，然后进行存储。</li>
+<li>与 NameNode 交互，获取文件的位置信息。</li>
+<li>与 DataNode 交互，读取或者写入数据。</li>
+<li>Client 提供一些命令来管理 HDFS，比如启动或者关闭HDFS。</li>
+<li>Client 可以通过一些命令来访问 HDFS。</li>
+</ul>
+<p>　　<strong>2、NameNode：就是 master，它是一个主管、管理者。</strong></p>
+<ul>
+<li>管理 HDFS 的名称空间</li>
+<li>管理数据块（Block）映射信息</li>
+<li>配置副本策略</li>
+<li>处理客户端读写请求。</li>
+</ul>
+<p>　　<strong>3、DataNode：就是Slave。NameNode 下达命令，DataNode 执行实际的操作。</strong></p>
+<ul>
+<li>存储实际的数据块。</li>
+<li>执行数据块的读&#x2F;写操作。</li>
+</ul>
+<p>　　<strong>4、Secondary NameNode：并非 NameNode 的热备。当NameNode 挂掉的时候，它并不能马上替换 NameNode 并提供服务。</strong></p>
+<ul>
+<li>辅助 NameNode，分担其工作量。</li>
+<li>定期合并 fsimage和fsedits，并推送给NameNode。</li>
+<li>在紧急情况下，可辅助恢复 NameNode。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/" data-id="clmak06om0000g0vo97fi003q" data-title="HDFS架构" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HDFS/" rel="tag">HDFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/09/07/HDFS%E7%89%B9%E6%80%A7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">HDFS特性</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>

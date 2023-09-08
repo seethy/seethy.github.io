@@ -73,6 +73,80 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-HDFS架构" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/" class="article-date">
+  <time class="dt-published" datetime="2023-09-08T11:48:51.000Z" itemprop="datePublished">2023-09-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BB%84%E4%BB%B6%E6%9C%8D%E5%8A%A1/">组件服务</a>►<a class="article-category-link" href="/categories/%E7%BB%84%E4%BB%B6%E6%9C%8D%E5%8A%A1/HDFS/">HDFS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/">HDFS架构</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>　　</p>
+<p>​    <img src="/images/HDFS%E6%9E%B6%E6%9E%84.jpeg" alt="HDFS架构图"></p>
+<p>　　　　　　　　　　　　　　　　　　HDFS的架构图</p>
+<p>　　HDFS 采用Master&#x2F;Slave的架构来存储数据，这种架构主要由四个部分组成，分别为HDFS Client、NameNode、DataNode和Secondary NameNode。下面我们分别介绍这四个组成部分  </p>
+<p>　　<strong>1、Client：就是客户端。</strong></p>
+<ul>
+<li>文件切分。文件上传 HDFS 的时候，Client 将文件切分成 一个一个的Block，然后进行存储。</li>
+<li>与 NameNode 交互，获取文件的位置信息。</li>
+<li>与 DataNode 交互，读取或者写入数据。</li>
+<li>Client 提供一些命令来管理 HDFS，比如启动或者关闭HDFS。</li>
+<li>Client 可以通过一些命令来访问 HDFS。</li>
+</ul>
+<p>　　<strong>2、NameNode：就是 master，它是一个主管、管理者。</strong></p>
+<ul>
+<li>管理 HDFS 的名称空间</li>
+<li>管理数据块（Block）映射信息</li>
+<li>配置副本策略</li>
+<li>处理客户端读写请求。</li>
+</ul>
+<p>　　<strong>3、DataNode：就是Slave。NameNode 下达命令，DataNode 执行实际的操作。</strong></p>
+<ul>
+<li>存储实际的数据块。</li>
+<li>执行数据块的读&#x2F;写操作。</li>
+</ul>
+<p>　　<strong>4、Secondary NameNode：并非 NameNode 的热备。当NameNode 挂掉的时候，它并不能马上替换 NameNode 并提供服务。</strong></p>
+<ul>
+<li>辅助 NameNode，分担其工作量。</li>
+<li>定期合并 fsimage和fsedits，并推送给NameNode。</li>
+<li>在紧急情况下，可辅助恢复 NameNode。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/" data-id="clmak06om0000g0vo97fi003q" data-title="HDFS架构" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HDFS/" rel="tag">HDFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-HDFS特性" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/09/07/HDFS%E7%89%B9%E6%80%A7/" class="article-date">
@@ -397,7 +471,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Go%E7%BC%96%E8%AF%91/" style="font-size: 10px;">Go编译</a> <a href="/tags/HDFS/" style="font-size: 10px;">HDFS</a> <a href="/tags/JAVA/" style="font-size: 10px;">JAVA</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/sparksql/" style="font-size: 10px;">sparksql</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">多线程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 10px;">性能优化</a> <a href="/tags/%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5/" style="font-size: 10px;">故障排查</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C/" style="font-size: 10px;">数据倾斜</a>
+      <a href="/tags/Go%E7%BC%96%E8%AF%91/" style="font-size: 10px;">Go编译</a> <a href="/tags/HDFS/" style="font-size: 20px;">HDFS</a> <a href="/tags/JAVA/" style="font-size: 10px;">JAVA</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/sparksql/" style="font-size: 10px;">sparksql</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">多线程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 20px;">大数据</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 10px;">性能优化</a> <a href="/tags/%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5/" style="font-size: 10px;">故障排查</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C/" style="font-size: 10px;">数据倾斜</a>
     </div>
   </div>
 
@@ -419,6 +493,10 @@
       <ul>
         
           <li>
+            <a href="/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/">HDFS架构</a>
+          </li>
+        
+          <li>
             <a href="/2023/09/07/HDFS%E7%89%B9%E6%80%A7/">HDFS特性</a>
           </li>
         
@@ -432,10 +510,6 @@
         
           <li>
             <a href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">SparkSQL数据倾斜性能优化</a>
-          </li>
-        
-          <li>
-            <a href="/2023/08/27/volatile/">volatile</a>
           </li>
         
       </ul>
