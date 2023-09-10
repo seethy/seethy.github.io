@@ -347,6 +347,22 @@
   
 
   
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "http://example.com/2023/08/27/volatile/",
+  owner: 'seethy',
+  repo: 'seethy.github.io',
+  oauth: {
+    client_id: 'b2d315c0d9259de7b0da',
+    client_secret: '5f7a8296ee81e5159b064d82f6fb51eb1f5b633c',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
