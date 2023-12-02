@@ -6,7 +6,8 @@ tags:
   - 密钥
   - 公钥
   - 私钥
-categories: ["编程语言"，"shell"]
+categories:
+  - ["编程语言","shell"]
 ---
 ### 查看ca有效期
 
