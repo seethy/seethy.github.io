@@ -140,6 +140,122 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-openssl常用命令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/11/25/openssl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">openssl常用命令</a>
+    </h1>
+  
+
+        
+        
+<a href="/2023/11/25/openssl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="archive-article-date">
+  	<time datetime="2023-11-25T02:05:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-11-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="查看ca有效期"><a href="#查看ca有效期" class="headerlink" title="查看ca有效期"></a>查看ca有效期</h3><p> openssl x509 -in ca.pem -dates</p>
+<h3 id="生成私钥"><a href="#生成私钥" class="headerlink" title="生成私钥"></a>生成私钥</h3><p> openssl  genrsa -out  rsa.key 1024</p>
+<blockquote>
+<p>$ openssl genrsa -h<br>&#x2F;<br>&#x2F;*u<br>usage: genrsa [args] [numbits]<br> -des           生成的私钥采用DES算法加密<br>  -des3          生成的私钥采用DES3算法加密 (168 bit key)<br>   -seed          encrypt PEM output with cbc seed<br>    -aes128, -aes192, -aes256<br>    以上几个都是对称加密算法的指定，因为我们长期会把私钥加密，避免明文存放<br>     -out file       私钥输出位置<br>      -passout arg    输出文件的密码，如果我们指定了对称加密算法，也可以不带此参数，会有命令行提示你输入密码<br>      **&#x2F;</p>
+</blockquote>
+<h3 id="生成公钥"><a href="#生成公钥" class="headerlink" title="生成公钥"></a>生成公钥</h3><pre><code>    openssl  rsa -pubout -in rsa.key -out pub.key
+</code></pre>
+<h3 id="公钥-私钥加密"><a href="#公钥-私钥加密" class="headerlink" title="公钥&#x2F;私钥加密"></a>公钥&#x2F;私钥加密</h3><pre><code>    openssl  rsautl -encrypt -in plain.txt -inkey rsa.key -out encrypt.txt
+</code></pre>
+<h3 id="私钥解密"><a href="#私钥解密" class="headerlink" title="私钥解密"></a>私钥解密</h3><pre><code>     openssl rsautl -decrypt -in encrypt.txt -inkey rsa.key -out plain1.txt
+</code></pre>
+<h3 id="base64解码"><a href="#base64解码" class="headerlink" title="base64解码"></a>base64解码</h3><pre><code>     cat testencrypt |base64 -d &gt; testencrypt.base64
+</code></pre>
+<h3 id="将普通私钥转成PKCS-8编码"><a href="#将普通私钥转成PKCS-8编码" class="headerlink" title="将普通私钥转成PKCS#8编码"></a>将普通私钥转成PKCS#8编码</h3><pre><code>     openssl pkcs8 -topk8 -in rsa_private_key.pem -out pkcs8_rsa_private_key.pem -nocrypt
+</code></pre>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">openssl</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">密钥</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">公钥</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">私钥</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/编程语言//" class="article-tag-list-link color5">编程语言</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/编程语言/shell//" class="article-tag-list-link color1">shell</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/11/25/openssl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-blackbox黑盒监控主机存活，网络时延" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1033,6 +1149,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">blackbox</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">openssl</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">密钥</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">公钥</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">私钥</a>
               </li>
             
             <div class="clearfix"></div>
