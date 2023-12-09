@@ -6,14 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: git | Seethy&#39;s Blog</title>
+  <title>java五种单例模式 | Seethy&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Seethy&#39;s Blog">
-<meta property="og:url" content="http://example.com/tags/git/index.html">
+  <meta name="description" content="引自： https:&#x2F;&#x2F;www.cnblogs.com&#x2F;KylinBlog&#x2F;p&#x2F;13932110.html  1、饿汉式(线程安全，调用效率高，但是不能延时加载)：1234567public class ImageLoader&amp;#123;      private static ImageLoader instance &#x3D; new ImageLoader;      private ImageL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java五种单例模式">
+<meta property="og:url" content="http://example.com/2023/12/09/java%E4%BA%94%E7%A7%8D%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Seethy&#39;s Blog">
+<meta property="og:description" content="引自： https:&#x2F;&#x2F;www.cnblogs.com&#x2F;KylinBlog&#x2F;p&#x2F;13932110.html  1、饿汉式(线程安全，调用效率高，但是不能延时加载)：1234567public class ImageLoader&amp;#123;      private static ImageLoader instance &#x3D; new ImageLoader;      private ImageL">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-09T12:41:42.000Z">
+<meta property="article:modified_time" content="2023-12-09T13:01:55.345Z">
 <meta property="article:author" content="Seethy">
+<meta property="article:tag" content="单例模式">
+<meta property="article:tag" content="饿汉式">
+<meta property="article:tag" content="懒汉式">
+<meta property="article:tag" content="双重检锁">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Seethy&#39;s Blog" type="application/atom+xml">
@@ -144,80 +152,225 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-java五种单例模式" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/" class="archive-article-date">
-  	<time datetime="2023-09-03T12:21:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/">解决git:filename too long报错</a>
+    <h1 class="article-title" itemprop="name">
+      java五种单例模式
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2023/12/09/java%E4%BA%94%E7%A7%8D%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2023-12-09T12:41:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>引自： <a target="_blank" rel="noopener" href="https://www.cnblogs.com/KylinBlog/p/13932110.html">https://www.cnblogs.com/KylinBlog/p/13932110.html</a></p>
+</blockquote>
+<h3 id="1、饿汉式-线程安全，调用效率高，但是不能延时加载-："><a href="#1、饿汉式-线程安全，调用效率高，但是不能延时加载-：" class="headerlink" title="1、饿汉式(线程安全，调用效率高，但是不能延时加载)："></a>1、饿汉式(线程安全，调用效率高，但是不能延时加载)：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ImageLoader</span>&#123; </span><br><span class="line">     <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">ImageLoader</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ImageLoader</span>; </span><br><span class="line">     <span class="keyword">private</span> <span class="title function_">ImageLoader</span><span class="params">()</span>&#123;&#125; </span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">static</span> ImageLoader <span class="title function_">getInstance</span><span class="params">()</span>&#123;  </span><br><span class="line">          <span class="keyword">return</span> instance;  </span><br><span class="line">      &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一上来就把单例对象创建出来了，要用的时候直接返回即可，这种可以说是单例模式中最简单的一种实现方式。但是问题也比较明显。单例在还没有使用到的时候，初始化就已经完成了。也就是说，如果程序从头到位都没用使用这个单例的话，单例的对象还是会创建。这就造成了不必要的资源浪费。所以不推荐这种实现方式。</p>
+<h3 id="2-懒汉式-存在线程风险，调用效率不高，但是能延时加载-："><a href="#2-懒汉式-存在线程风险，调用效率不高，但是能延时加载-：" class="headerlink" title="2.懒汉式(存在线程风险，调用效率不高，但是能延时加载)："></a>2.懒汉式(存在线程风险，调用效率不高，但是能延时加载)：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonDemo2</span> &#123;</span><br><span class="line">     </span><br><span class="line">    <span class="comment">//类初始化时，不初始化这个对象(延时加载，真正用的时候再创建)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonDemo2 instance;</span><br><span class="line">     </span><br><span class="line">    <span class="comment">//构造器私有化</span></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonDemo2</span><span class="params">()</span>&#123;&#125;</span><br><span class="line">     </span><br><span class="line">    <span class="comment">//方法同步，调用效率低</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> SingletonDemo2 <span class="title function_">getInstance</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance==<span class="literal">null</span>)&#123;</span><br><span class="line">            instance=<span class="keyword">new</span> <span class="title class_">SingletonDemo2</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-Double-CheckLock实现单例：DCL也就是双重锁判断机制（由于JVM底层模型原因，偶尔会出问题，不建议使用）："><a href="#3-Double-CheckLock实现单例：DCL也就是双重锁判断机制（由于JVM底层模型原因，偶尔会出问题，不建议使用）：" class="headerlink" title="3.Double CheckLock实现单例：DCL也就是双重锁判断机制（由于JVM底层模型原因，偶尔会出问题，不建议使用）："></a>3.Double CheckLock实现单例：DCL也就是双重锁判断机制（由于JVM底层模型原因，偶尔会出问题，不建议使用）：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonDemo5</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> SingletonDemo5 SingletonDemo5;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonDemo5</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SingletonDemo5 <span class="title function_">newInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (SingletonDemo5 == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (SingletonDemo5.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (SingletonDemo5 == <span class="literal">null</span>) &#123;</span><br><span class="line">                    SingletonDemo5 = <span class="keyword">new</span> <span class="title class_">SingletonDemo5</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> SingletonDemo5;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-静态内部类实现模式（线程安全，调用效率高，可以延时加载）"><a href="#4-静态内部类实现模式（线程安全，调用效率高，可以延时加载）" class="headerlink" title="4.静态内部类实现模式（线程安全，调用效率高，可以延时加载）"></a>4.静态内部类实现模式（线程安全，调用效率高，可以延时加载）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonDemo3</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonClassInstance</span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingletonDemo3 instance=<span class="keyword">new</span> <span class="title class_">SingletonDemo3</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonDemo3</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SingletonDemo3 <span class="title function_">getInstance</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonClassInstance.instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-枚举类（线程安全，调用效率高，不能延时加载，可以天然的防止反射和反序列化调用）"><a href="#5-枚举类（线程安全，调用效率高，不能延时加载，可以天然的防止反射和反序列化调用）" class="headerlink" title="5.枚举类（线程安全，调用效率高，不能延时加载，可以天然的防止反射和反序列化调用）"></a>5.枚举类（线程安全，调用效率高，不能延时加载，可以天然的防止反射和反序列化调用）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">SingletonDemo4</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//枚举元素本身就是单例</span></span><br><span class="line">    INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//添加自己需要的操作</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">singletonOperation</span><span class="params">()</span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>如何选用：</li>
+</ul>
+<p>-单例对象 占用资源少，不需要延时加载，枚举 好于 饿汉<br>-单例对象 占用资源多，需要延时加载，静态内部类 好于 懒汉式</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢您赏我吃零食<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/settings/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/settings/img/weixin.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">单例模式</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">故障排查</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">饿汉式</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">懒汉式</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">双重检锁</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务//" class="article-tag-list-link color5">组件服务</a>
+        			<a href="/categories/编程语言//" class="article-tag-list-link color5">编程语言</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务/git//" class="article-tag-list-link color4">git</a>
+        			<a href="/categories/编程语言/JAVA//" class="article-tag-list-link color5">JAVA</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADNklEQVR42u3aQXLbQAwEQP//08rVqbLpGSzlkuDeU8qhSPbqAGGwHx/xenxa3/3l+vrPf2+feH2f/J71wsbGxn4T9uNy5ddcv9D19debmHwB7XtiY2Nj72N/94C8SFy/UPKs5LMJ+9qCjY2NjZ0Uv7apyK/JtwAbGxsbO/+5n8RMSeTUbsSvFjBsbGzsl2cnoVIe4udFKI+WEupTsjRsbGzsl2fnU9HX//dT5tvY2NjYL8x+lOt6I86LUxsqDRXY2NjYi9h3DXHzKOcZR3+GMRY2Njb2IvZJwJQPCfIXbYOtk7EBNjY29ruzk8agLWntlv3OsZ7/noiNjY29iN0yWvx1Q5KHSieFrZhyY2NjY78tO+9aTo7U5E3L7H/b8oaNjY29iZ2PTtvQvw2h8lbkhoqNjY2NvYKdBO73Nh6z8fDJBhVZGjY2NvYidvKAvLSclLeiAgcjCmxsbOzd7PZwTDusnW1oHm8V12NjY2MvYufRTNtIzIKkvETNRshRx4ONjY29gn3dEsxKWj70PW9Xom3CxsbGXspui0pb0vLVYtpDPNjY2Nib2PmQNT9kmfzmPyl7+ZZFpRcbGxt7BXt2gCZpZtoxcP6VzD6FjY2NvYl9/ci2AZiNY9vx8OxI0BfzbWxsbOwV7Lte7iTWeTxhRW+OjY2NvY6d/0rPRwLnhzVnw4C698LGxsZ+W3ZbWtpMJgmV2iFBm5Z9cQdsbGzsRew8ZM+HvvmAth0ntF9D3YFhY2NjvyF7Vmxmj8wblXagO5yKYGNjYy9i51H7bMjaAvKjk8M4DBsbG3sR+6QNOImK2gOU55vyQ6iEjY2NvYJ9MqbNRwsJfrbqwoaNjY29mt0OX9u4/+RQTtt4YGNjY/9NdsKrQ5ybhsf5+uE+2NjY2CvYJz/389aijZlmDVIxVMbGxsZexG6LwWzce3IcZxZ1tVuMjY2N/e7s8yFuPoI9Qeaj6OhZ2NjY2OvYs6AnAbeFbXZNGzNhY2Nj/2X2Xe1H3vbkX0ax6djY2Nh/nj0L6E+2Jh9XRJ/CxsbGXsdOQqXzYzqzO89CpdvGA9jY2Ngvz67jmGCz8qJ41zHNfOyBjY2NvYj9DxguNmFJJMdPAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2023/12/09/GO%E6%80%A7%E8%83%BD%E6%9F%A5%E7%9C%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GO性能查看</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -251,9 +404,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
