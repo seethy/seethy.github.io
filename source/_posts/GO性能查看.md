@@ -22,8 +22,8 @@ go tool pprof -inuse_space 100.96.92.176:8080/debug/pprof/heap   （交互命令
 ```
 [root@bd01 ~]# go tool pprof -inuse_space 100.100.223.70:8080/debug/pprof/heap 
 Fetching profile over HTTP from http://100.100.223.70:8080/debug/pprof/heap
-Saved profile in /root/pprof/pprof.zteagent.alloc_objects.alloc_space.inuse_objects.inuse_space.009.pb.gz
-File: xxagent
+Saved profile in /root/pprof/pprof.xxxagent.alloc_objects.alloc_space.inuse_objects.inuse_space.009.pb.gz
+File: xxxagent
 Type: inuse_space
 Time: Dec 9, 2023 at 3:56pm (CST)
 Entering interactive mode (type "help" for commands, "o" for options)
