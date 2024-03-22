@@ -146,6 +146,306 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GO本地编译-离线编译" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/09/03/GO%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91-%E7%A6%BB%E7%BA%BF%E7%BC%96%E8%AF%91/">GO本地编译&amp;&amp;离线编译</a>
+    </h1>
+  
+
+        
+        
+<a href="/2023/09/03/GO%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91-%E7%A6%BB%E7%BA%BF%E7%BC%96%E8%AF%91/" class="archive-article-date">
+  	<time datetime="2023-09-03T12:51:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>设置环境变量:<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOROOT=/home/go</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$GOROOT</span>/bin</span><br></pre></td></tr></table></figure>
+打开本地代理（在线，可以下载依赖的module）<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go <span class="built_in">env</span> -w GO111MODULE=on</span><br><span class="line">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span><br></pre></td></tr></table></figure>
+将本地下载的go module $GOROOT&#x2F;bin&#x2F;pkg 拷贝到离线服务器的 $GOROOT&#x2F;bin&#x2F;pkg 下<br>在离线服务器上设置<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go <span class="built_in">env</span> -w GOPROXY=file:///<span class="variable">$GOROOT</span>/bin/pkg/mod/cache/download</span><br></pre></td></tr></table></figure></li>
+<li>编译命令：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go build -o sql_exporter main.go</span><br><span class="line"><span class="comment"># alpine环境下运行编译命令</span></span><br><span class="line"><span class="comment"># alpine环境下运行需要go env -w CGO_ENABLED=0</span></span><br><span class="line">CGO_ENABLED=0 go build -o sql_exporter main.go</span><br></pre></td></tr></table></figure>
+关闭安全性校验： go env -w GOSUMDB&#x3D;off</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Go编译</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/编程语言//" class="article-tag-list-link color5">编程语言</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/编程语言/GO//" class="article-tag-list-link color3">GO</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/09/03/GO%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91-%E7%A6%BB%E7%BA%BF%E7%BC%96%E8%AF%91/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-解决git-filename-too-long报错" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/">解决git:filename too long报错</a>
+    </h1>
+  
+
+        
+        
+<a href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/" class="archive-article-date">
+  	<time datetime="2023-09-03T12:21:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>git config –global core.longpaths true</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">故障排查</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/组件服务//" class="article-tag-list-link color5">组件服务</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/组件服务/git//" class="article-tag-list-link color4">git</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-SparkSQL数据倾斜性能优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">SparkSQL数据倾斜性能优化</a>
+    </h1>
+  
+
+        
+        
+<a href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="archive-article-date">
+  	<time datetime="2023-09-02T02:49:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>背景：</strong><br>国内某大牌运营商话单数据量比较大，大概一天2T左右话单，标准话单一个小时需要处理9KW左右的话单量，标准话单处理任务在执行30分钟左右，报“too large frame”或者”Size exceeds Integer.MAX_VALUE”错误，无法正常生成标准话单数据。<br><strong>1小时任务处理数据量：</strong><br>OTT话单 ：9KW<br>8303话单：无<br>内容数据：1千万<br>节目数据：无<br>用户数据：7百万<br>栏目：3<br>频道数据：无<br>节目单，tvod: 无<br>产品信息：100<br><strong>根因分析：</strong><br>spark任务报这2个错，主要是发生在shuffle阶段，因为Spark对每个partition所能包含的数据大小有写死的限制（约为2G），当某个partition包含超过此限制的数据时，就会抛出这类异常。<br>造成此异常的主要原因有:</p>
+<ol>
+<li>源数据太多，partition分区数太少，导致分配到每个partition上的数据量过多，超过阈值。</li>
+<li>数据倾斜，某列的数据分布不均衡，当某个shuffle操作是根据此列数据进行shuffle时，就会造成整个数据集发生倾斜，即某几个partition包含了大量数据，并且其数据大小超过了Spark的限制，而其他partition只包含很少的数据。</li>
+</ol>
+<p><strong>解决方案：</strong></p>
+<ol>
+<li>通过调整spark.sql.shuffle.partitions，增加分区数。</li>
+<li>消除数据倾斜。<br>spark join主要有以下两种方式：<br>a) Broadcast Hash Join ：当其中一个数据集足够小时，采用Broadcast Hash Join，较小的数据集会被广播到所有Spark的executor上，并转化为一个Hash Table，之后较大数据集的各个分区会在各executor上与Hash Table进行本地的Join，各分区Join的结果合并为最终结果。<br>Broadcast Hash Join 没有Shuffle阶段、效率最高。但为了保证可靠性，executor必须有足够的内存能放得下被广播的数据集，所以当进两个数据集的大小都超过一个可配置的阈值之后，Spark不会采用这种Join。控制这个阈值的参数为spark.sql.autoBroadcastJoinThreshold, 中默认值为10M。<br>b) Sort Merge Join:  将key相同的记录重分配同一个executor上，不同的是，在每个executor上，不再构造哈希表，而是对两个分区进行排序，然后用两个下标同时遍历两个分区，如果两个下标指向的记录key相同，则输出这两条记录，否则移动key较小的下标。<br>Sort Merge Join也有Shuffle阶段，因此效率同样不如Broadcast Hash Join。在内存使用方面，因为不需要构造哈希表，需要的内存比Hash Join要少。<br>所以数据倾斜一般发生在sort merge join过程，大表跟大表关联一般建议使用sort merge join，大表的数据倾斜，可以采用将倾斜键<em>随机数(比如100以内的随机数), 另外一个表对应的键</em>100这种以空间换效率的方式； 大表跟小表关联，一般建议将小表cache, 然后通过broadcast的方式分发到各executor中提高处理性能，而且也可以避免数据倾斜的情况。</li>
+</ol>
+<p><strong>排查和优化过程：</strong><br>因为话单原始数据量比较大，一开始怀疑默认分区数200不够，调大到1000，spark.sql.shuffle.partitions&#x3D;1000，问题没有解决。<br>检查报错的spark sql语句，主要集中在 OTT话单同时左关联用户数据（通过usercode字段字段关联），内容数据（通过contentcode字段关联），栏目数据（通过columncode字段关联），产品信息（通过productcode字段关联）这4个数据表，通过分析spark UI 的任务执行情况，确定应该是发生数据倾斜。<br>检查用户表里的usercode分布，发现10%话单中usercode为空，在ETL过滤掉usercode为空的话单后，问题没有解决； 非空的usercode基本上分布比较均匀。<br>检查内容数据的分布，发现top5的内容数据量都在1kw 左右，数据倾斜比较严重，但是小时话单经过排查后的内容数总共就12w左右，所以修改代码在关联之前将内容先过滤下，然后再cache table, 充分利用broadcast hash join的优势，不shuffle。将spark.sql.autoBroadcastJoinThreshold配置成500M, 但是经过调整后，问题还是没有解决，还是报同样的错误。凌晨数据量比较小的情况下，偶尔任务能够成功，但是发现生成的结果数据文件差异很大，大文件甚至能够达到5G左右。<br>通过对sql语句进行explain分析，发现左关联的内容表，栏目表等没有通broadcast hash join还是sort merge join， 怀疑创建的内容表，栏目表等临时表 cache方式有问题。<br>针对spark sql broadcast的条件, 于是做了以下的测试：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> TEMPORARY <span class="keyword">view</span> view1 asselect d.columncode,c.contentcodefrom vinsight_common_vd_vas_all_program_spark cleft <span class="keyword">join</span> vinsight_common_vd_vas_all_column_spark don c.columncode<span class="operator">=</span>d.columncode;cache <span class="keyword">table</span> cache1 <span class="keyword">as</span> <span class="keyword">select</span> d.columncode,c.contentcodefrom vinsight_common_vd_vas_all_program_spark cleft <span class="keyword">join</span> vinsight_common_vd_vas_all_column_spark don c.columncode<span class="operator">=</span>d.columncode;<span class="keyword">create</span> <span class="keyword">table</span> tab1 asselect d.columncode,c.contentcodefrom vinsight_common_vd_vas_all_program_spark cleft <span class="keyword">join</span> vinsight_common_vd_vas_all_column_spark don c.columncode<span class="operator">=</span>d.columncode;explain <span class="keyword">select</span><span class="comment">/*+ MAPJOIN(b) */</span> a.usercode, b.contentcodefrom vinsight_common_md_fact_standardcdr_spark a</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> tab1 bon a.contentcode <span class="operator">=</span> b.contentcodewhere a.p_date<span class="operator">&gt;</span><span class="string">&#x27;2021-12-01&#x27;</span>;<span class="operator">+</span>cache1,  view1<span class="operator">|</span> <span class="operator">=</span><span class="operator">=</span> Physical Plan <span class="operator">=</span><span class="operator">=</span><span class="operator">*</span>Project [usercode#<span class="number">19861</span>, contentcode#<span class="number">19683</span>]<span class="operator">+</span><span class="operator">-</span> <span class="operator">*</span>BroadcastHashJoin [contentcode#<span class="number">19870</span>], [contentcode#<span class="number">19683</span>], LeftOuter, BuildRight</span><br><span class="line">   :<span class="operator">-</span> HiveTableScan [usercode#<span class="number">19861</span>, contentcode#<span class="number">19870</span>], HiveTableRelation `zxvmax`.`vinsight_common_md_fact_standardcdr_spark`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [cdrtype#<span class="number">19860</span>, usercode#<span class="number">19861</span>, profilecode#<span class="number">19862</span>, begintime#<span class="number">19863</span>, endtime#<span class="number">19864</span>, timelen#<span class="number">19865</span>L, relativeurl#<span class="number">19866</span>, servicetype#<span class="number">19867</span>, columncode#<span class="number">19868</span>, columnname#<span class="number">19869</span>, contentcode#<span class="number">19870</span>, contentname#<span class="number">19871</span>, physicalcontentid#<span class="number">19872</span>, channelcode#<span class="number">19873</span>, channelname#<span class="number">19874</span>, prevuecode#<span class="number">19875</span>, prevuename#<span class="number">19876</span>, programcode#<span class="number">19877</span>, programname#<span class="number">19878</span>, seriesheadcode#<span class="number">19879</span>, seriesheadname#<span class="number">19880</span>, cpcode#<span class="number">19881</span>, cpname#<span class="number">19882</span>, telecomcode#<span class="number">19883</span>, ... <span class="number">38</span> more fields], [p_provincecode#<span class="number">19922</span>, p_date#<span class="number">19923</span>, p_hour#<span class="number">19924</span>], [isnotnull(p_date#<span class="number">19923</span>), (p_date#<span class="number">19923</span> <span class="operator">&gt;</span> <span class="number">2021</span><span class="number">-12</span><span class="number">-01</span>)]</span><br><span class="line">   <span class="operator">+</span><span class="operator">-</span> BroadcastExchange HashedRelationBroadcastMode(List(input[<span class="number">0</span>, string, <span class="literal">true</span>]))</span><br><span class="line">      <span class="operator">+</span><span class="operator">-</span> InMemoryTableScan [contentcode#<span class="number">19683</span>]</span><br><span class="line">            <span class="operator">+</span><span class="operator">-</span> InMemoryRelation [columncode#<span class="number">19730</span>, contentcode#<span class="number">19683</span>], <span class="literal">true</span>, <span class="number">10000</span>, StorageLevel(disk, memory, deserialized, <span class="number">1</span> replicas), `cache1`</span><br><span class="line">                  <span class="operator">+</span><span class="operator">-</span> <span class="operator">*</span>Project [columncode#<span class="number">19730</span>, contentcode#<span class="number">19683</span>]</span><br><span class="line">                     <span class="operator">+</span><span class="operator">-</span> SortMergeJoin [columncode#<span class="number">19704</span>], [columncode#<span class="number">19730</span>], LeftOuter</span><br><span class="line">                        :<span class="operator">-</span> <span class="operator">*</span>Sort [columncode#<span class="number">19704</span> <span class="keyword">ASC</span> NULLS <span class="keyword">FIRST</span>], <span class="literal">false</span>, <span class="number">0</span></span><br><span class="line">                        :  <span class="operator">+</span><span class="operator">-</span> Exchange hashpartitioning(columncode#<span class="number">19704</span>, <span class="number">200</span>)</span><br><span class="line">                        :     <span class="operator">+</span><span class="operator">-</span> HiveTableScan [contentcode#<span class="number">19683</span>, columncode#<span class="number">19704</span>], HiveTableRelation `zxvmax`.`vinsight_common_vd_vas_all_program_spark`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [opflag#<span class="number">19676</span>, optime#<span class="number">19677</span>, programcode#<span class="number">19678</span>, bocode#<span class="number">19679</span>, langtype#<span class="number">19680</span>, programname#<span class="number">19681</span>, programtype#<span class="number">19682</span>, contentcode#<span class="number">19683</span>, seriesprogramcode#<span class="number">19684</span>, programhead#<span class="number">19685</span>, mediaservices#<span class="number">19686</span>, ratingid#<span class="number">19687</span>, onlinetime#<span class="number">19688</span>, offlinetime#<span class="number">19689</span>, createtime#<span class="number">19690</span>, countryname#<span class="number">19691</span>, telecomcode#<span class="number">19692</span>, mediacode#<span class="number">19693</span>, seriesnum#<span class="number">19694</span>, posterfilelist#<span class="number">19695</span>, wggenre#<span class="number">19696</span>, wgtags#<span class="number">19697</span>, wgkeywords#<span class="number">19698</span>, description#<span class="number">19699</span>, ... <span class="number">27</span> more fields], [p_provincecode#<span class="number">19727</span>]</span><br><span class="line">                        <span class="operator">+</span><span class="operator">-</span> <span class="operator">*</span>Sort [columncode#<span class="number">19730</span> <span class="keyword">ASC</span> NULLS <span class="keyword">FIRST</span>], <span class="literal">false</span>, <span class="number">0</span></span><br><span class="line">                           <span class="operator">+</span><span class="operator">-</span> Exchange hashpartitioning(columncode#<span class="number">19730</span>, <span class="number">200</span>)</span><br><span class="line">                              <span class="operator">+</span><span class="operator">-</span> HiveTableScan [columncode#<span class="number">19730</span>], HiveTableRelation `zxvmax`.`vinsight_common_vd_vas_all_column_spark`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [opflag#<span class="number">19728</span>, optime#<span class="number">19729</span>, columncode#<span class="number">19730</span>, bocode#<span class="number">19731</span>, langtype#<span class="number">19732</span>, subjectname#<span class="number">19733</span>, parentcode#<span class="number">19734</span>, subjecttype#<span class="number">19735</span>, description#<span class="number">19736</span>, mediacode#<span class="number">19737</span>, telecomcode#<span class="number">19738</span>, advertiseflag#<span class="number">19739</span>, posterfilelist#<span class="number">19740</span>, columnlock#<span class="number">19741</span>, subexist#<span class="number">19742</span>, updatetime#<span class="number">19743</span>, p_day#<span class="number">19744</span>], [p_provincecode#<span class="number">19745</span>]  <span class="operator">|</span></span><br><span class="line">							  tab1<span class="comment">-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--+| == Physical Plan ==*Project [usercode#20108, contentcode#20173]+- *BroadcastHashJoin [contentcode#20117], [contentcode#20173], LeftOuter, BuildRight</span></span><br><span class="line">   :<span class="operator">-</span> HiveTableScan [usercode#<span class="number">20108</span>, contentcode#<span class="number">20117</span>], HiveTableRelation `zxvmax`.`vinsight_common_md_fact_standardcdr_spark`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [cdrtype#<span class="number">20107</span>, usercode#<span class="number">20108</span>, profilecode#<span class="number">20109</span>, begintime#<span class="number">20110</span>, endtime#<span class="number">20111</span>, timelen#<span class="number">20112</span>L, relativeurl#<span class="number">20113</span>, servicetype#<span class="number">20114</span>, columncode#<span class="number">20115</span>, columnname#<span class="number">20116</span>, contentcode#<span class="number">20117</span>, contentname#<span class="number">20118</span>, physicalcontentid#<span class="number">20119</span>, channelcode#<span class="number">20120</span>, channelname#<span class="number">20121</span>, prevuecode#<span class="number">20122</span>, prevuename#<span class="number">20123</span>, programcode#<span class="number">20124</span>, programname#<span class="number">20125</span>, seriesheadcode#<span class="number">20126</span>, seriesheadname#<span class="number">20127</span>, cpcode#<span class="number">20128</span>, cpname#<span class="number">20129</span>, telecomcode#<span class="number">20130</span>, ... <span class="number">38</span> more fields], [p_provincecode#<span class="number">20169</span>, p_date#<span class="number">20170</span>, p_hour#<span class="number">20171</span>], [isnotnull(p_date#<span class="number">20170</span>), (p_date#<span class="number">20170</span> <span class="operator">&gt;</span> <span class="number">2021</span><span class="number">-12</span><span class="number">-01</span>)]</span><br><span class="line">   <span class="operator">+</span><span class="operator">-</span> BroadcastExchange HashedRelationBroadcastMode(List(input[<span class="number">0</span>, string, <span class="literal">true</span>]))</span><br><span class="line">      <span class="operator">+</span><span class="operator">-</span> HiveTableScan [contentcode#<span class="number">20173</span>], HiveTableRelation `zxvmax`.`tab1`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [columncode#<span class="number">20172</span>, contentcode#<span class="number">20173</span>]  <span class="operator">|</span></span><br></pre></td></tr></table></figure>
+<p><strong>总结:</strong><br>cache1,view1 这2种方式生成的执行计划是一样的，但是这种临时表在跟大表左关联时，还是会从原来的临时表做分解，导致还是存在SortMergeJoin, shuffle过程的。<br>采用创建新表这种临时表方式，然后使用hint  MAPJOIN明确使用boradcast方式可以广播小表。<br>最终修改sparksql为第二种方式后，任务运行结果文件比较均衡，基本上每个分区文件在50M以下，任务时间也控制在15分钟以内完成。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">sparksql</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据倾斜</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">性能优化</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/组件服务//" class="article-tag-list-link color5">组件服务</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/组件服务/sparksql//" class="article-tag-list-link color4">sparksql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-volatile" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
