@@ -146,6 +146,111 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GO性能查看" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/12/09/GO%E6%80%A7%E8%83%BD%E6%9F%A5%E7%9C%8B/">GO性能查看</a>
+    </h1>
+  
+
+        
+        
+<a href="/2023/12/09/GO%E6%80%A7%E8%83%BD%E6%9F%A5%E7%9C%8B/" class="archive-article-date">
+  	<time datetime="2023-12-09T08:20:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="查看CPU："><a href="#查看CPU：" class="headerlink" title="查看CPU："></a>查看CPU：</h3><p>curl <a target="_blank" rel="noopener" href="http://100.100.254.75:8080/debug/pprof/profile?seconds=20">http://100.100.254.75:8080/debug/pprof/profile?seconds=20</a> -o  pprof.out</p>
+<p>go tool pprof -http :2234 .&#x2F;pprof.out (需要安装Graphviz)</p>
+<h3 id="查看内存："><a href="#查看内存：" class="headerlink" title="查看内存："></a>查看内存：</h3><p>curl <a target="_blank" rel="noopener" href="http://100.100.223.81:8080/debug/pprof/heap?seconds=10">http://100.100.223.81:8080/debug/pprof/heap?seconds=10</a> -o heap.out</p>
+<p>go tool pprof -http :2234 .&#x2F;heap.out (需要安装Graphviz)</p>
+<p>go tool pprof -inuse_space 100.96.92.176:8080&#x2F;debug&#x2F;pprof&#x2F;heap   （交互命令）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@bd01 ~]# go tool pprof -inuse_space 100.100.223.70:8080/debug/pprof/heap </span><br><span class="line">Fetching profile over HTTP from http://100.100.223.70:8080/debug/pprof/heap</span><br><span class="line">Saved profile in /root/pprof/pprof.xxxagent.alloc_objects.alloc_space.inuse_objects.inuse_space.009.pb.gz</span><br><span class="line">File: xxxagent</span><br><span class="line">Type: inuse_space</span><br><span class="line">Time: Dec 9, 2023 at 3:56pm (CST)</span><br><span class="line">Entering interactive mode (type &quot;help&quot; for commands, &quot;o&quot; for options)</span><br><span class="line">(pprof) top 10</span><br><span class="line">Showing nodes accounting for 10818.04kB, 50.12% of 21582.56kB total</span><br><span class="line">Showing top 10 nodes out of 231</span><br><span class="line">      flat  flat%   sum%        cum   cum%</span><br><span class="line"> 1805.17kB  8.36%  8.36%  2354.01kB 10.91%  compress/flate.NewWriter</span><br><span class="line"> 1577.92kB  7.31% 15.68%  1577.92kB  7.31%  github.com/denisenkom/go-mssqldb/internal/cp.init</span><br><span class="line"> 1571.92kB  7.28% 22.96%  1571.92kB  7.28%  regexp/syntax.(*compiler).inst</span><br><span class="line"> 1184.27kB  5.49% 28.45%  1184.27kB  5.49%  zte.com.cn/ztekit/server/signals.(*Handler).Loop</span><br><span class="line"> 1033.28kB  4.79% 33.23%  1033.28kB  4.79%  runtime.procresize</span><br><span class="line"> 1030.24kB  4.77% 38.01%  1030.24kB  4.77%  reflect.unsafe_NewArray</span><br><span class="line"> 1024.28kB  4.75% 42.75%  1536.30kB  7.12%  github.com/benthosdev/benthos/v4/internal/docs.FieldSpecs.YAMLToMap</span><br><span class="line"> 548.84kB  2.54% 45.30%   548.84kB  2.54%  compress/flate.(*compressor).initDeflate (inline)</span><br><span class="line"> 522.06kB  2.42% 47.71%   522.06kB  2.42%  github.com/aws/aws-sdk-go-v2/service/s3/internal/endpoints.init</span><br><span class="line"> 520.04kB  2.41% 50.12%   520.04kB  2.41%  github.com/benthosdev/benthos/v4/public/service.newStream</span><br><span class="line">(pprof) exit</span><br><span class="line">[root@bd01 ~]#</span><br></pre></td></tr></table></figure>
+<h3 id="查看协程："><a href="#查看协程：" class="headerlink" title="查看协程："></a>查看协程：</h3><p> curl <a target="_blank" rel="noopener" href="http://100.100.223.81:8080/debug/pprof/goroutine">http://100.100.223.81:8080/debug/pprof/goroutine</a>  -o goroutine.out</p>
+<h3 id="查看进程的线程数："><a href="#查看进程的线程数：" class="headerlink" title="查看进程的线程数："></a>查看进程的线程数：</h3><p> cat &#x2F;proc&#x2F;进程ID&#x2F;status|grep Threads</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">pprof</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Graphviz</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">goroutine</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/编程语言//" class="article-tag-list-link color5">编程语言</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/编程语言/GO//" class="article-tag-list-link color3">GO</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/12/09/GO%E6%80%A7%E8%83%BD%E6%9F%A5%E7%9C%8B/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-openssl常用命令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -262,6 +367,202 @@
 
 
   
+    <article id="post-美丽的晚霞" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/10/14/%E7%BE%8E%E4%B8%BD%E7%9A%84%E6%99%9A%E9%9C%9E/">美丽的晚霞</a>
+    </h1>
+  
+
+        
+        
+<a href="/2023/10/14/%E7%BE%8E%E4%B8%BD%E7%9A%84%E6%99%9A%E9%9C%9E/" class="archive-article-date">
+  	<time datetime="2023-10-14T12:07:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;傍晚，夕阳渐渐地收起了光芒，变得柔和起来了。我背着书包走在放学回家的路上，而我却把目光转移到了这道美丽的晚霞上了。<br>&emsp;&emsp;天边的晚霞，像红绸子一样挂在深蓝的天空中。它闪耀着绚丽多彩的光，还变换着不同的图案。它一会儿像绽放的鸡冠，一会儿像威武的雄狮，一会儿又像一座挺拔的山峰，真是形态万千，变幻莫测。沐浴着彩色的霞光，我的身体好像披上了一层美丽的纱衣。<br>&emsp;&emsp;太阳失去了那耀眼的光芒，渐渐地，渐渐地，从原来的半个脸成了一小半，似乎要消失了，晚霞也渐渐地由浅红变得越来越深，他在向我们告别，因为他马上要离去了。<br>&emsp;&emsp;夜深了，晚霞消失了，但我还沉浸在如梦似幻的美景中，久久不愿离开。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">三年级</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育//" class="article-tag-list-link color3">教育</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育/作文//" class="article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育/作文/三年级//" class="article-tag-list-link color4">三年级</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/10/14/%E7%BE%8E%E4%B8%BD%E7%9A%84%E6%99%9A%E9%9C%9E/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-李晓明的生日" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/10/07/%E6%9D%8E%E6%99%93%E6%98%8E%E7%9A%84%E7%94%9F%E6%97%A5/">李晓明的生日</a>
+    </h1>
+  
+
+        
+        
+<a href="/2023/10/07/%E6%9D%8E%E6%99%93%E6%98%8E%E7%9A%84%E7%94%9F%E6%97%A5/" class="archive-article-date">
+  	<time datetime="2023-10-07T12:07:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;今天课间，同学们聚在一起，不知怎么就提起了生日的话题。大家都热情地讨论着爸爸妈妈给自己过生日的热闹情景。只有李晓明一声不吭地独自坐在座位上闷闷不乐。大家围过来，问他怎么了，他便说：“我也快过生日了，但爸爸妈妈都在外地工作……”说到这，大家都沉默了。<br>&emsp;&emsp;放学后，小小对亮亮说：“亮亮，李晓明的爸爸妈妈不在他身边，没人给他过生日，好可怜啊！要不我们给他一个惊喜吧！”“好啊，亮亮赞同地说，”我们准备一下吧！”<br>&emsp;&emsp;李晓明的生日到了，他低着头，无精打采地来到学校。刚走到教室门口，他就呆住了：那五颜六色的气球，闪亮的彩带，把教室装扮得五彩缤纷，黑板上“祝李晓明生日快乐”几个美术字非常醒目。李晓明还没回过神来，小小端着大蛋糕来到他的面前，微笑地看着他，亲切地说：“李晓明生日快乐！” 同时教室里响起“祝你生日快乐”的歌声，李晓明激动得热泪盈眶，哽咽着说不出话来，但他心里暖洋洋得。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">三年级</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育//" class="article-tag-list-link color3">教育</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育/作文//" class="article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育/作文/三年级//" class="article-tag-list-link color4">三年级</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/10/07/%E6%9D%8E%E6%99%93%E6%98%8E%E7%9A%84%E7%94%9F%E6%97%A5/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-日记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -331,6 +632,104 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2023/09/23/%E6%97%A5%E8%AE%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-啄木鸟明星" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/09/23/%E5%95%84%E6%9C%A8%E9%B8%9F%E6%98%8E%E6%98%9F/">啄木鸟明星</a>
+    </h1>
+  
+
+        
+        
+<a href="/2023/09/23/%E5%95%84%E6%9C%A8%E9%B8%9F%E6%98%8E%E6%98%9F/" class="archive-article-date">
+  	<time datetime="2023-09-23T12:07:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;今天是星期天，森林王国异常热闹，因为老虎大王宣布今天要评选出”森林明星”了。所有小动物都匆匆忙忙地赶到比塞现场，除了啄木鸟，其余的都到齐了。山羊评委说:时间到了，我们不等啄木鸟了。”于是紧张的评委活动开始了。<br>&emsp;&emsp;直灵鸟第一个飞到台上，它放开歌喉，唱了一首非常动听的乐曲，大家一下子就被吸引住了。第二个上台的是孔雀，它昂着头，大摇大摆地走上去，一下子展开了那五光十色的尾巴。&emsp;&emsp;小动物们一个接一个地上台，都拿出自己拿手的本领等到比赛快结束的时候，啄木乌气喘吁吁地飞过来，山羊评委问道“你么这么晚才到?”我来时在路上看见树爷爷无精打采的，我发现它生虫了，就帮它把病治好了。”啄木鸟说。<br>&emsp;&emsp;“我知道了，这次森林明星是啄木鸟获胜。”<br>&emsp;&emsp;“为什么，为什么?” 大家争论道。<br>&emsp;&emsp;“外表美不是真正的美，心美才叫真正的美。”老虎大王说。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">三年级</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育//" class="article-tag-list-link color3">教育</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育/作文//" class="article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育/作文/三年级//" class="article-tag-list-link color4">三年级</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/09/23/%E5%95%84%E6%9C%A8%E9%B8%9F%E6%98%8E%E6%98%9F/">展开全文 >></a>
         </p>
       
 
@@ -784,414 +1183,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2023/09/03/GO%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91-%E7%A6%BB%E7%BA%BF%E7%BC%96%E8%AF%91/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-解决git-filename-too-long报错" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/">解决git:filename too long报错</a>
-    </h1>
-  
-
-        
-        
-<a href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/" class="archive-article-date">
-  	<time datetime="2023-09-03T12:21:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>git config –global core.longpaths true</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">故障排查</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务//" class="article-tag-list-link color5">组件服务</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务/git//" class="article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2023/09/03/%E8%A7%A3%E5%86%B3git-filename-too-long%E6%8A%A5%E9%94%99/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-SparkSQL数据倾斜性能优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">SparkSQL数据倾斜性能优化</a>
-    </h1>
-  
-
-        
-        
-<a href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="archive-article-date">
-  	<time datetime="2023-09-02T02:49:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>背景：</strong><br>国内某大牌运营商话单数据量比较大，大概一天2T左右话单，标准话单一个小时需要处理9KW左右的话单量，标准话单处理任务在执行30分钟左右，报“too large frame”或者”Size exceeds Integer.MAX_VALUE”错误，无法正常生成标准话单数据。<br><strong>1小时任务处理数据量：</strong><br>OTT话单 ：9KW<br>8303话单：无<br>内容数据：1千万<br>节目数据：无<br>用户数据：7百万<br>栏目：3<br>频道数据：无<br>节目单，tvod: 无<br>产品信息：100<br><strong>根因分析：</strong><br>spark任务报这2个错，主要是发生在shuffle阶段，因为Spark对每个partition所能包含的数据大小有写死的限制（约为2G），当某个partition包含超过此限制的数据时，就会抛出这类异常。<br>造成此异常的主要原因有:</p>
-<ol>
-<li>源数据太多，partition分区数太少，导致分配到每个partition上的数据量过多，超过阈值。</li>
-<li>数据倾斜，某列的数据分布不均衡，当某个shuffle操作是根据此列数据进行shuffle时，就会造成整个数据集发生倾斜，即某几个partition包含了大量数据，并且其数据大小超过了Spark的限制，而其他partition只包含很少的数据。</li>
-</ol>
-<p><strong>解决方案：</strong></p>
-<ol>
-<li>通过调整spark.sql.shuffle.partitions，增加分区数。</li>
-<li>消除数据倾斜。<br>spark join主要有以下两种方式：<br>a) Broadcast Hash Join ：当其中一个数据集足够小时，采用Broadcast Hash Join，较小的数据集会被广播到所有Spark的executor上，并转化为一个Hash Table，之后较大数据集的各个分区会在各executor上与Hash Table进行本地的Join，各分区Join的结果合并为最终结果。<br>Broadcast Hash Join 没有Shuffle阶段、效率最高。但为了保证可靠性，executor必须有足够的内存能放得下被广播的数据集，所以当进两个数据集的大小都超过一个可配置的阈值之后，Spark不会采用这种Join。控制这个阈值的参数为spark.sql.autoBroadcastJoinThreshold, 中默认值为10M。<br>b) Sort Merge Join:  将key相同的记录重分配同一个executor上，不同的是，在每个executor上，不再构造哈希表，而是对两个分区进行排序，然后用两个下标同时遍历两个分区，如果两个下标指向的记录key相同，则输出这两条记录，否则移动key较小的下标。<br>Sort Merge Join也有Shuffle阶段，因此效率同样不如Broadcast Hash Join。在内存使用方面，因为不需要构造哈希表，需要的内存比Hash Join要少。<br>所以数据倾斜一般发生在sort merge join过程，大表跟大表关联一般建议使用sort merge join，大表的数据倾斜，可以采用将倾斜键<em>随机数(比如100以内的随机数), 另外一个表对应的键</em>100这种以空间换效率的方式； 大表跟小表关联，一般建议将小表cache, 然后通过broadcast的方式分发到各executor中提高处理性能，而且也可以避免数据倾斜的情况。</li>
-</ol>
-<p><strong>排查和优化过程：</strong><br>因为话单原始数据量比较大，一开始怀疑默认分区数200不够，调大到1000，spark.sql.shuffle.partitions&#x3D;1000，问题没有解决。<br>检查报错的spark sql语句，主要集中在 OTT话单同时左关联用户数据（通过usercode字段字段关联），内容数据（通过contentcode字段关联），栏目数据（通过columncode字段关联），产品信息（通过productcode字段关联）这4个数据表，通过分析spark UI 的任务执行情况，确定应该是发生数据倾斜。<br>检查用户表里的usercode分布，发现10%话单中usercode为空，在ETL过滤掉usercode为空的话单后，问题没有解决； 非空的usercode基本上分布比较均匀。<br>检查内容数据的分布，发现top5的内容数据量都在1kw 左右，数据倾斜比较严重，但是小时话单经过排查后的内容数总共就12w左右，所以修改代码在关联之前将内容先过滤下，然后再cache table, 充分利用broadcast hash join的优势，不shuffle。将spark.sql.autoBroadcastJoinThreshold配置成500M, 但是经过调整后，问题还是没有解决，还是报同样的错误。凌晨数据量比较小的情况下，偶尔任务能够成功，但是发现生成的结果数据文件差异很大，大文件甚至能够达到5G左右。<br>通过对sql语句进行explain分析，发现左关联的内容表，栏目表等没有通broadcast hash join还是sort merge join， 怀疑创建的内容表，栏目表等临时表 cache方式有问题。<br>针对spark sql broadcast的条件, 于是做了以下的测试：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> TEMPORARY <span class="keyword">view</span> view1 asselect d.columncode,c.contentcodefrom vinsight_common_vd_vas_all_program_spark cleft <span class="keyword">join</span> vinsight_common_vd_vas_all_column_spark don c.columncode<span class="operator">=</span>d.columncode;cache <span class="keyword">table</span> cache1 <span class="keyword">as</span> <span class="keyword">select</span> d.columncode,c.contentcodefrom vinsight_common_vd_vas_all_program_spark cleft <span class="keyword">join</span> vinsight_common_vd_vas_all_column_spark don c.columncode<span class="operator">=</span>d.columncode;<span class="keyword">create</span> <span class="keyword">table</span> tab1 asselect d.columncode,c.contentcodefrom vinsight_common_vd_vas_all_program_spark cleft <span class="keyword">join</span> vinsight_common_vd_vas_all_column_spark don c.columncode<span class="operator">=</span>d.columncode;explain <span class="keyword">select</span><span class="comment">/*+ MAPJOIN(b) */</span> a.usercode, b.contentcodefrom vinsight_common_md_fact_standardcdr_spark a</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> tab1 bon a.contentcode <span class="operator">=</span> b.contentcodewhere a.p_date<span class="operator">&gt;</span><span class="string">&#x27;2021-12-01&#x27;</span>;<span class="operator">+</span>cache1,  view1<span class="operator">|</span> <span class="operator">=</span><span class="operator">=</span> Physical Plan <span class="operator">=</span><span class="operator">=</span><span class="operator">*</span>Project [usercode#<span class="number">19861</span>, contentcode#<span class="number">19683</span>]<span class="operator">+</span><span class="operator">-</span> <span class="operator">*</span>BroadcastHashJoin [contentcode#<span class="number">19870</span>], [contentcode#<span class="number">19683</span>], LeftOuter, BuildRight</span><br><span class="line">   :<span class="operator">-</span> HiveTableScan [usercode#<span class="number">19861</span>, contentcode#<span class="number">19870</span>], HiveTableRelation `zxvmax`.`vinsight_common_md_fact_standardcdr_spark`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [cdrtype#<span class="number">19860</span>, usercode#<span class="number">19861</span>, profilecode#<span class="number">19862</span>, begintime#<span class="number">19863</span>, endtime#<span class="number">19864</span>, timelen#<span class="number">19865</span>L, relativeurl#<span class="number">19866</span>, servicetype#<span class="number">19867</span>, columncode#<span class="number">19868</span>, columnname#<span class="number">19869</span>, contentcode#<span class="number">19870</span>, contentname#<span class="number">19871</span>, physicalcontentid#<span class="number">19872</span>, channelcode#<span class="number">19873</span>, channelname#<span class="number">19874</span>, prevuecode#<span class="number">19875</span>, prevuename#<span class="number">19876</span>, programcode#<span class="number">19877</span>, programname#<span class="number">19878</span>, seriesheadcode#<span class="number">19879</span>, seriesheadname#<span class="number">19880</span>, cpcode#<span class="number">19881</span>, cpname#<span class="number">19882</span>, telecomcode#<span class="number">19883</span>, ... <span class="number">38</span> more fields], [p_provincecode#<span class="number">19922</span>, p_date#<span class="number">19923</span>, p_hour#<span class="number">19924</span>], [isnotnull(p_date#<span class="number">19923</span>), (p_date#<span class="number">19923</span> <span class="operator">&gt;</span> <span class="number">2021</span><span class="number">-12</span><span class="number">-01</span>)]</span><br><span class="line">   <span class="operator">+</span><span class="operator">-</span> BroadcastExchange HashedRelationBroadcastMode(List(input[<span class="number">0</span>, string, <span class="literal">true</span>]))</span><br><span class="line">      <span class="operator">+</span><span class="operator">-</span> InMemoryTableScan [contentcode#<span class="number">19683</span>]</span><br><span class="line">            <span class="operator">+</span><span class="operator">-</span> InMemoryRelation [columncode#<span class="number">19730</span>, contentcode#<span class="number">19683</span>], <span class="literal">true</span>, <span class="number">10000</span>, StorageLevel(disk, memory, deserialized, <span class="number">1</span> replicas), `cache1`</span><br><span class="line">                  <span class="operator">+</span><span class="operator">-</span> <span class="operator">*</span>Project [columncode#<span class="number">19730</span>, contentcode#<span class="number">19683</span>]</span><br><span class="line">                     <span class="operator">+</span><span class="operator">-</span> SortMergeJoin [columncode#<span class="number">19704</span>], [columncode#<span class="number">19730</span>], LeftOuter</span><br><span class="line">                        :<span class="operator">-</span> <span class="operator">*</span>Sort [columncode#<span class="number">19704</span> <span class="keyword">ASC</span> NULLS <span class="keyword">FIRST</span>], <span class="literal">false</span>, <span class="number">0</span></span><br><span class="line">                        :  <span class="operator">+</span><span class="operator">-</span> Exchange hashpartitioning(columncode#<span class="number">19704</span>, <span class="number">200</span>)</span><br><span class="line">                        :     <span class="operator">+</span><span class="operator">-</span> HiveTableScan [contentcode#<span class="number">19683</span>, columncode#<span class="number">19704</span>], HiveTableRelation `zxvmax`.`vinsight_common_vd_vas_all_program_spark`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [opflag#<span class="number">19676</span>, optime#<span class="number">19677</span>, programcode#<span class="number">19678</span>, bocode#<span class="number">19679</span>, langtype#<span class="number">19680</span>, programname#<span class="number">19681</span>, programtype#<span class="number">19682</span>, contentcode#<span class="number">19683</span>, seriesprogramcode#<span class="number">19684</span>, programhead#<span class="number">19685</span>, mediaservices#<span class="number">19686</span>, ratingid#<span class="number">19687</span>, onlinetime#<span class="number">19688</span>, offlinetime#<span class="number">19689</span>, createtime#<span class="number">19690</span>, countryname#<span class="number">19691</span>, telecomcode#<span class="number">19692</span>, mediacode#<span class="number">19693</span>, seriesnum#<span class="number">19694</span>, posterfilelist#<span class="number">19695</span>, wggenre#<span class="number">19696</span>, wgtags#<span class="number">19697</span>, wgkeywords#<span class="number">19698</span>, description#<span class="number">19699</span>, ... <span class="number">27</span> more fields], [p_provincecode#<span class="number">19727</span>]</span><br><span class="line">                        <span class="operator">+</span><span class="operator">-</span> <span class="operator">*</span>Sort [columncode#<span class="number">19730</span> <span class="keyword">ASC</span> NULLS <span class="keyword">FIRST</span>], <span class="literal">false</span>, <span class="number">0</span></span><br><span class="line">                           <span class="operator">+</span><span class="operator">-</span> Exchange hashpartitioning(columncode#<span class="number">19730</span>, <span class="number">200</span>)</span><br><span class="line">                              <span class="operator">+</span><span class="operator">-</span> HiveTableScan [columncode#<span class="number">19730</span>], HiveTableRelation `zxvmax`.`vinsight_common_vd_vas_all_column_spark`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [opflag#<span class="number">19728</span>, optime#<span class="number">19729</span>, columncode#<span class="number">19730</span>, bocode#<span class="number">19731</span>, langtype#<span class="number">19732</span>, subjectname#<span class="number">19733</span>, parentcode#<span class="number">19734</span>, subjecttype#<span class="number">19735</span>, description#<span class="number">19736</span>, mediacode#<span class="number">19737</span>, telecomcode#<span class="number">19738</span>, advertiseflag#<span class="number">19739</span>, posterfilelist#<span class="number">19740</span>, columnlock#<span class="number">19741</span>, subexist#<span class="number">19742</span>, updatetime#<span class="number">19743</span>, p_day#<span class="number">19744</span>], [p_provincecode#<span class="number">19745</span>]  <span class="operator">|</span></span><br><span class="line">							  tab1<span class="comment">-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--+| == Physical Plan ==*Project [usercode#20108, contentcode#20173]+- *BroadcastHashJoin [contentcode#20117], [contentcode#20173], LeftOuter, BuildRight</span></span><br><span class="line">   :<span class="operator">-</span> HiveTableScan [usercode#<span class="number">20108</span>, contentcode#<span class="number">20117</span>], HiveTableRelation `zxvmax`.`vinsight_common_md_fact_standardcdr_spark`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [cdrtype#<span class="number">20107</span>, usercode#<span class="number">20108</span>, profilecode#<span class="number">20109</span>, begintime#<span class="number">20110</span>, endtime#<span class="number">20111</span>, timelen#<span class="number">20112</span>L, relativeurl#<span class="number">20113</span>, servicetype#<span class="number">20114</span>, columncode#<span class="number">20115</span>, columnname#<span class="number">20116</span>, contentcode#<span class="number">20117</span>, contentname#<span class="number">20118</span>, physicalcontentid#<span class="number">20119</span>, channelcode#<span class="number">20120</span>, channelname#<span class="number">20121</span>, prevuecode#<span class="number">20122</span>, prevuename#<span class="number">20123</span>, programcode#<span class="number">20124</span>, programname#<span class="number">20125</span>, seriesheadcode#<span class="number">20126</span>, seriesheadname#<span class="number">20127</span>, cpcode#<span class="number">20128</span>, cpname#<span class="number">20129</span>, telecomcode#<span class="number">20130</span>, ... <span class="number">38</span> more fields], [p_provincecode#<span class="number">20169</span>, p_date#<span class="number">20170</span>, p_hour#<span class="number">20171</span>], [isnotnull(p_date#<span class="number">20170</span>), (p_date#<span class="number">20170</span> <span class="operator">&gt;</span> <span class="number">2021</span><span class="number">-12</span><span class="number">-01</span>)]</span><br><span class="line">   <span class="operator">+</span><span class="operator">-</span> BroadcastExchange HashedRelationBroadcastMode(List(input[<span class="number">0</span>, string, <span class="literal">true</span>]))</span><br><span class="line">      <span class="operator">+</span><span class="operator">-</span> HiveTableScan [contentcode#<span class="number">20173</span>], HiveTableRelation `zxvmax`.`tab1`, org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, [columncode#<span class="number">20172</span>, contentcode#<span class="number">20173</span>]  <span class="operator">|</span></span><br></pre></td></tr></table></figure>
-<p><strong>总结:</strong><br>cache1,view1 这2种方式生成的执行计划是一样的，但是这种临时表在跟大表左关联时，还是会从原来的临时表做分解，导致还是存在SortMergeJoin, shuffle过程的。<br>采用创建新表这种临时表方式，然后使用hint  MAPJOIN明确使用boradcast方式可以广播小表。<br>最终修改sparksql为第二种方式后，任务运行结果文件比较均衡，基本上每个分区文件在50M以下，任务时间也控制在15分钟以内完成。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">sparksql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据倾斜</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">性能优化</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务//" class="article-tag-list-link color5">组件服务</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务/sparksql//" class="article-tag-list-link color4">sparksql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2023/09/02/SparkSQL%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-volatile" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/08/27/volatile/">volatile</a>
-    </h1>
-  
-
-        
-        
-<a href="/2023/08/27/volatile/" class="archive-article-date">
-  	<time datetime="2023-08-27T13:01:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>volatile 是一个类型修饰符。volatile 的作用是作为指令关键字，确保本条指令不会因编译器的优化而省略</p>
-<h3 id="volatile-的特性"><a href="#volatile-的特性" class="headerlink" title="volatile 的特性"></a>volatile 的特性</h3><ol>
-<li><p>保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。（实现可见性）</p>
-</li>
-<li><p>禁止进行指令重排序。（实现有序性）</p>
-</li>
-<li><p>volatile 只能保证对单次读&#x2F;写的原子性。i++ 这种操作不能保证原子性。关于volatile 原子性可以理解为把对volatile变量的单个读&#x2F;写，看成是使用同一个锁对这些单个读&#x2F;写操作做了同步。</p>
-</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">多线程</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/编程语言//" class="article-tag-list-link color5">编程语言</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/编程语言/JAVA//" class="article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/编程语言/JAVA/多线程//" class="article-tag-list-link color4">多线程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2023/08/27/volatile/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-非遗观后有感" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/07/08/%E9%9D%9E%E9%81%97%E8%A7%82%E5%90%8E%E6%9C%89%E6%84%9F/">非遗观后有感</a>
-    </h1>
-  
-
-        
-        
-<a href="/2023/07/08/%E9%9D%9E%E9%81%97%E8%A7%82%E5%90%8E%E6%9C%89%E6%84%9F/" class="archive-article-date">
-  	<time datetime="2023-07-08T11:56:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-07-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&emsp;&emsp;伴随着温暖的阳光，我们带着好奇的心情跟随着讲解员去参观了我国的非物质文化遗产。我非常期待和激动。一进入大门，映入眼帘的是各式各样的茶壶，做工精致，造形多样，颜色丰富，有的上面还刻着各种汉字。<br>&emsp;&emsp;按着我们参观了制茶的机器，我觉得那些机器非常普通，但是看我看见它制生出来的针状的茶后，我非常惊讶:如此普通的机器能造出那么精细，跟针一样细的茶。<br>&emsp;&emsp;但是我最喜欢的是“做手工”的环节了。老师给我们每个人发了张做皮影的纸。我的纸上面有鸭的的身子、鸭子的头，鱼的身子和鱼的头，我们首先给它们上了色，然后用剪刀把它剪下来，最后，用钉子把它们钉在一起，形成一只完整的鸭子，一头完整的鱼。再给它们的各个关节插上棍子，一个皮影就完成了。<br>&emsp;&emsp;我们带着皮影去演皮影戏。我们用自己的皮影在一个专门演皮影戏的一个台子上演戏，我操作着两根根子，鸭子就会随着我的动作昂首挺胸地走出来。操作皮影的关键在于操作人手的动作，动作设计得越好，人物就愈逼真。如我们看的孙悟空和猪八戒打架的皮影戏。台下师傅的双手如蝴蝶般飞舞，台上的孙悟空和猪八戒时而腾云驾雾，时而短兵相接，让人目不暇接。<br>&emsp;&emsp;快乐的时光如此短暂，但是能与皮影结一段美好的遇见，让我见识了中国传统民间文化的精奇，美妙，又怎能不让我感慨呢？</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">作文</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">三年级</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/教育//" class="article-tag-list-link color3">教育</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/教育/作文//" class="article-tag-list-link color3">作文</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/教育/作文/三年级//" class="article-tag-list-link color4">三年级</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2023/07/08/%E9%9D%9E%E9%81%97%E8%A7%82%E5%90%8E%E6%9C%89%E6%84%9F/">展开全文 >></a>
         </p>
       
 
