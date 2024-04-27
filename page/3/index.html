@@ -832,37 +832,28 @@
 
 
   
-    <article id="post-blackbox黑盒监控主机存活，网络时延" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-其实我也很棒" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/09/09/blackbox%E9%BB%91%E7%9B%92%E7%9B%91%E6%8E%A7%E4%B8%BB%E6%9C%BA%E5%AD%98%E6%B4%BB%EF%BC%8C%E7%BD%91%E7%BB%9C%E6%97%B6%E5%BB%B6/">blackbox黑盒监控主机存活，网络时延</a>
+      <a class="article-title" href="/2023/09/14/%E5%85%B6%E5%AE%9E%E6%88%91%E4%B9%9F%E5%BE%88%E6%A3%92/">其实我也很棒</a>
     </h1>
   
 
         
         
-<a href="/2023/09/09/blackbox%E9%BB%91%E7%9B%92%E7%9B%91%E6%8E%A7%E4%B8%BB%E6%9C%BA%E5%AD%98%E6%B4%BB%EF%BC%8C%E7%BD%91%E7%BB%9C%E6%97%B6%E5%BB%B6/" class="archive-article-date">
-  	<time datetime="2023-09-09T02:46:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-09</time>
+<a href="/2023/09/14/%E5%85%B6%E5%AE%9E%E6%88%91%E4%B9%9F%E5%BE%88%E6%A3%92/" class="archive-article-date">
+  	<time datetime="2023-09-14T12:07:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-14</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>​       有时候，在一个集群网络中，需要持续关注各个边缘节点的网络性能，以保证能够持续提供高可靠性的服务，因此需要有一个工具能够提供持续探测主机存活，网络时延的机制。<br>​       Blackbox Exporter 是 Prometheus 社区提供的官方黑盒监控解决方案，其允许用户通过：HTTP、HTTPS、DNS、TCP 以及 ICMP 的方式对网络进行探测。本章节主要讲述blackbox ICMP主机探活机制，其本质主要是通过ping命令来检测目的主机的连通性。</p>
-<p><strong>Blackbox配置：</strong></p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">icmp:</span></span><br><span class="line">  <span class="attr">prober:</span> <span class="string">icmp</span></span><br><span class="line">  <span class="attr">timeout:</span> <span class="string">2s</span></span><br><span class="line">  <span class="attr">icmp:</span></span><br><span class="line">    <span class="attr">preferred_ip_protocol:</span> <span class="string">ip4</span></span><br><span class="line">    <span class="attr">ip_protocol_fallback:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<p>​    timeout代表探测的超时时间，重点关注preferred_ip_protocol: ip4配置，因为默认是使用ipv6地址探测，从而导致探测失败。<br>​    Blackbox容器部署配置，因为默认alpine基础镜像普通用户是不支持ping操作的，所以需要加上root用户权限</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">securityContext:</span></span><br><span class="line">  <span class="attr">allowPrivilegeEscalation:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">readOnlyRootFilesystem:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">runAsNonRoot:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">runAsUser:</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-
-<p>​      prometheus scrape配置如下， 这里的测试环境中，80.80.130.[79-81]这3个节点的网络是正常的，构造了一个不存在的节点80.80.130.200来测试联通性。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">&#x27;kubernetes-probe-ping-status&#x27;</span></span><br><span class="line">  <span class="attr">scheme:</span> <span class="string">https</span></span><br><span class="line">  <span class="attr">scrape_interval:</span> <span class="string">60s</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">tls_config:</span></span><br><span class="line">    <span class="attr">insecure_skip_verify:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">cert_file:</span> <span class="string">/etc/prometheus/secrets/tool-cert/tls.crt</span></span><br><span class="line">    <span class="attr">key_file:</span> <span class="string">/etc/prometheus/secrets/tool-cert/tls.key</span></span><br><span class="line">    <span class="attr">ca_file:</span> <span class="string">/etc/prometheus/secrets/tool-cert/ca.crt</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> [<span class="string">&#x27;80.80.130.79&#x27;</span>,<span class="string">&#x27;80.80.130.80&#x27;</span>,<span class="string">&#x27;80.80.130.81&#x27;</span>,<span class="string">&#x27;80.80.130.200&#x27;</span>]</span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">group:</span> <span class="string">icmp</span></span><br><span class="line">  <span class="attr">metrics_path:</span> <span class="string">/probe</span></span><br><span class="line">  <span class="attr">params:</span></span><br><span class="line">    <span class="attr">module:</span> [<span class="string">icmp</span>]</span><br><span class="line">  <span class="attr">relabel_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">action:</span> <span class="string">labelmap</span></span><br><span class="line">      <span class="attr">regex:</span> <span class="string">__meta_kubernetes_pod_label_(.+)</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">source_labels:</span> [<span class="string">__address__</span>]</span><br><span class="line">      <span class="attr">target_label:</span> <span class="string">__param_target</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">target_label:</span> <span class="string">__address__</span></span><br><span class="line">      <span class="attr">replacement:</span> <span class="string">blackbox-exporter.mon.svc.cluster.local.:6800</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">source_labels:</span> [<span class="string">__param_target</span>]</span><br><span class="line">      <span class="attr">target_label:</span> <span class="string">target_url</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">source_labels:</span> [<span class="string">instance</span>]</span><br><span class="line">      <span class="attr">target_label:</span> <span class="string">deviceid</span></span><br><span class="line">      <span class="attr">regex:</span> <span class="string">(.*)</span></span><br><span class="line">      <span class="attr">replacement:</span> <span class="string">$1</span></span><br><span class="line">      <span class="attr">action:</span> <span class="string">replace</span></span><br></pre></td></tr></table></figure>
-<p>​     查看prometheus结果， 可以看到正常节点的网络时延，80.80.130.200因为网络不通，所以2s超时了。<br>​    </p>
+        <p>&emsp;&emsp;春风拂过，窗外的杨树在哗哗作响。这是一种南方常见的树，一点都不稀奇。我看看窗外，突然觉得我平凡得如同窗外的树，既不是成绩班级第一，长得也不帅气。我把我的烦恼告诉了爸爸。爸爸就跟我一起盘点我的优点。<br>&emsp;&emsp;我的第一个优点是上课认真听讲,不随便讲话,无论哪个老师上课，我能做到以真听讲,听清楚老师说的每句话。除了上课发言外，我都不会在课堂上讲话，能上好每一节课。<br>&emsp;&emsp;第二个优点是完成作业的速度快、质量好。每当上完一节课,老师都会布置课堂作业,不管是哪科老师布置的，我都是班级前几个完成作业的。我一完成作业就开始一个字一个字地检查，力求做到最好。<br>&emsp;&emsp;我不仅上课让真听讲,完成作业速度快,质量好,还运动能力强。每次上作育课时，我都能完成老师布置的锻炼项目。除了学校的体育课，我还报了足球课,在外面学了羽毛球。每个教我的老师都夸我有天赋，动作完成得规范。<br>&emsp;&emsp;记得有一次，我考试成绩不理想，我一回到家就开始好好地复习试卷上的错题,并一题一题地订正，这就是我的第四个优点：能意识到自己的错误并加以改正。<br>&emsp;&emsp;盘点完我的优点，爸爸打开了窗户，叫我到窗前看。我看见一朵朵洁白的杨花正飞离树体，在风中飞扬。原来这么平凡的树也会倾尽所有胡展示自己，不见一点自卑。<br>&emsp;&emsp;我明白了。我们总有这样或那样的缺点,但是这些缺点都不足全否定自己。让自己变得更好,我们就能做更好的自己。</p>
 
       
 
@@ -876,7 +867,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">blackbox</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">三年级</a>
         		</li>
       		
 		</ul>
@@ -888,11 +883,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务//" class="article-tag-list-link color5">组件服务</a>
+        			<a href="/categories/教育//" class="article-tag-list-link color3">教育</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务/blackbox//" class="article-tag-list-link color4">blackbox</a>
+        			<a href="/categories/教育/作文//" class="article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育/作文/三年级//" class="article-tag-list-link color4">三年级</a>
         		</li>
       		
 		</ul>
@@ -901,7 +900,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/09/09/blackbox%E9%BB%91%E7%9B%92%E7%9B%91%E6%8E%A7%E4%B8%BB%E6%9C%BA%E5%AD%98%E6%B4%BB%EF%BC%8C%E7%BD%91%E7%BB%9C%E6%97%B6%E5%BB%B6/">展开全文 >></a>
+          <a class="article-more-a" href="/2023/09/14/%E5%85%B6%E5%AE%9E%E6%88%91%E4%B9%9F%E5%BE%88%E6%A3%92/">展开全文 >></a>
         </p>
       
 
@@ -931,56 +930,28 @@
 
 
   
-    <article id="post-HDFS架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-我们班的幽默王子" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/">HDFS架构</a>
+      <a class="article-title" href="/2023/09/14/%E6%88%91%E4%BB%AC%E7%8F%AD%E7%9A%84%E5%B9%BD%E9%BB%98%E7%8E%8B%E5%AD%90/">我们班的“幽默王子”</a>
     </h1>
   
 
         
         
-<a href="/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2023-09-08T11:48:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-08</time>
+<a href="/2023/09/14/%E6%88%91%E4%BB%AC%E7%8F%AD%E7%9A%84%E5%B9%BD%E9%BB%98%E7%8E%8B%E5%AD%90/" class="archive-article-date">
+  	<time datetime="2023-09-14T12:07:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-14</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>　　</p>
-<p>​    <img src="/images/HDFS%E6%9E%B6%E6%9E%84.jpeg" alt="HDFS架构图"></p>
-<p>　　HDFS 采用Master&#x2F;Slave的架构来存储数据，这种架构主要由四个部分组成，分别为HDFS Client、NameNode、DataNode和Secondary NameNode。下面我们分别介绍这四个组成部分  </p>
-<p>　　<strong>1、Client：就是客户端。</strong></p>
-<ul>
-<li>文件切分。文件上传 HDFS 的时候，Client 将文件切分成 一个一个的Block，然后进行存储。</li>
-<li>与 NameNode 交互，获取文件的位置信息。</li>
-<li>与 DataNode 交互，读取或者写入数据。</li>
-<li>Client 提供一些命令来管理 HDFS，比如启动或者关闭HDFS。</li>
-<li>Client 可以通过一些命令来访问 HDFS。</li>
-</ul>
-<p>　　<strong>2、NameNode：就是 master，它是一个主管、管理者。</strong></p>
-<ul>
-<li>管理 HDFS 的名称空间</li>
-<li>管理数据块（Block）映射信息</li>
-<li>配置副本策略</li>
-<li>处理客户端读写请求。</li>
-</ul>
-<p>　　<strong>3、DataNode：就是Slave。NameNode 下达命令，DataNode 执行实际的操作。</strong></p>
-<ul>
-<li>存储实际的数据块。</li>
-<li>执行数据块的读&#x2F;写操作。</li>
-</ul>
-<p>　　<strong>4、Secondary NameNode：并非 NameNode 的热备。当NameNode 挂掉的时候，它并不能马上替换 NameNode 并提供服务。</strong></p>
-<ul>
-<li>辅助 NameNode，分担其工作量。</li>
-<li>定期合并 fsimage和fsedits，并推送给NameNode。</li>
-<li>在紧急情况下，可辅助恢复 NameNode。</li>
-</ul>
+        <p>&emsp;&emsp;“幽默王子”?这不是说的是我们班的那一位同学么?<br>&emsp;&emsp;他长得非常帅气，他有着一双乌黑、透明的眼睛，一对机灵的耳朵，戴着一副黑白相间的眼镜，最有意思的是他有着一张像新月一样弯弯的嘴。因为他特别爱笑，笑的时候嘴角高弯的，而且无论什么时候，看他的嘴角都是弯弯的，好像他永远都没有烦恼。每次他对我说话时，都面带做笑，我心情也会变得飞扬起来。我觉得他有带给别人快乐的魔力。<br>&emsp;&emsp;他非常爱讲笑话，而且讲出来的笑话都很好笑。记得一次，我们班明明同学摔倒了，摔得很重，趴在地上号啕大哭。我站在明明旁边安wèi他，可是明明还是在哭，我有点紧张，不知所措，不知道要怎么开导明明。就在这个紧急时刻，我们班的“幽默大王”及时赶到了这儿，他一看就明白了情况，只见他笑着说：“是不是因为今天阳光太灿烂，你们来这里练蛤蟆功？怎么不叫下我，我也来一下”，话音刚落，他就做了一个起手式，然后晃一下身子，假装摔倒在地，双手趴着，嘴里发出“呱呱”的声音。逗得那位同学捧腹大笑，心情犹如雨过天晴一样。我们也笑得停不下来。不愧是我们班的“幽默王子”，有他在的地方就有笑声。<br>&emsp;&emsp;这就是我们班的幽默大王，一个爱笑也爱讲笑话的阳光男孩。</p>
 
       
 
@@ -994,11 +965,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">大数据</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">作文</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HDFS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">三年级</a>
         		</li>
       		
 		</ul>
@@ -1010,11 +981,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务//" class="article-tag-list-link color5">组件服务</a>
+        			<a href="/categories/教育//" class="article-tag-list-link color3">教育</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务/HDFS//" class="article-tag-list-link color5">HDFS</a>
+        			<a href="/categories/教育/作文//" class="article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育/作文/三年级//" class="article-tag-list-link color4">三年级</a>
         		</li>
       		
 		</ul>
@@ -1023,7 +998,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/09/08/HDFS%E6%9E%B6%E6%9E%84/">展开全文 >></a>
+          <a class="article-more-a" href="/2023/09/14/%E6%88%91%E4%BB%AC%E7%8F%AD%E7%9A%84%E5%B9%BD%E9%BB%98%E7%8E%8B%E5%AD%90/">展开全文 >></a>
         </p>
       
 
@@ -1053,70 +1028,28 @@
 
 
   
-    <article id="post-HDFS特性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-我的乐高梦" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/09/07/HDFS%E7%89%B9%E6%80%A7/">HDFS特性</a>
+      <a class="article-title" href="/2023/09/14/%E6%88%91%E7%9A%84%E4%B9%90%E9%AB%98%E6%A2%A6/">我的乐高梦</a>
     </h1>
   
 
         
         
-<a href="/2023/09/07/HDFS%E7%89%B9%E6%80%A7/" class="archive-article-date">
-  	<time datetime="2023-09-07T14:15:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-07</time>
+<a href="/2023/09/14/%E6%88%91%E7%9A%84%E4%B9%90%E9%AB%98%E6%A2%A6/" class="archive-article-date">
+  	<time datetime="2023-09-14T12:07:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-14</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>优点：</strong>　</p>
-<p>1、高容错性</p>
-<ul>
-<li>数据自动保存多个副本。它通过增加副本的形式，提高容错性。</li>
-<li>某一个副本丢失以后，它可以自动恢复，这是由 HDFS 内部机制实现的，我们不必关心。</li>
-</ul>
-<p>2、适合批处理</p>
-<ul>
-<li>它是通过移动计算而不是移动数据。</li>
-<li>它会把数据位置暴露给计算框架。</li>
-</ul>
-<p>3、适合大数据处理</p>
-<ul>
-<li>处理数据达到 GB、TB、甚至PB级别的数据。</li>
-<li>能够处理百万规模以上的文件数量，数量相当之大。</li>
-<li>能够处理10K节点的规模。</li>
-</ul>
-<p>4、流式文件访问</p>
-<ul>
-<li>一次写入，多次读取。文件一旦写入不能修改，只能追加。</li>
-<li>它能保证数据的一致性。</li>
-</ul>
-<p>5、可构建在廉价机器上</p>
-<ul>
-<li>它通过多副本机制，提高可靠性。</li>
-<li>它提供了容错和恢复机制。比如某一个副本丢失，可以通过其它副本来恢复。</li>
-</ul>
-<p><strong>缺点：</strong></p>
-<p>1、低延时数据访问</p>
-<ul>
-<li>比如毫秒级的来存储数据，这是不行的，它做不到。</li>
-<li>它适合高吞吐率的场景，就是在某一时间内写入大量的数据。但是它在低延时的情况下是不行的，比如毫秒级以内读取数据，这样它是很难做到的。</li>
-</ul>
-<p>2、小文件存储</p>
-<ul>
-<li>存储大量小文件(这里的小文件是指小于HDFS系统的Block大小的文件（默认64M）)的话，它会占用 NameNode大量的内存来存储文件、目录和块信息。这样是不可取的，因为NameNode的内存总是有限的。</li>
-<li>小文件存储的寻道时间会超过读取时间，它违反了HDFS的设计目标。</li>
-</ul>
-<p>3、并发写入、文件随机修改</p>
-<ul>
-<li>一个文件只能有一个写，不允许多个线程同时写。</li>
-<li>仅支持数据 append（追加），不支持文件的随机修改。</li>
-</ul>
+        <p>&emsp;&emsp;一个阳光明媚的春天的早上，爸爸带我去上乐高课，我心想:“哎!又要多上一节课，好累啊。”刚走进去，我就看见了组装好的高大的天安门和威武的飞机，这是用手拼出来的么？看着它们，我的心在鼓动：我一定要学好这一门课，亲手拼出我梦里的世界。<br>&emsp;&emsp;老师一开始就会出一张图和一大盒如蚂蚁般大小的乐高对着拼，我看着这密密麻麻的乐高， 觉得头都晕了，这要拼到什么时候？ 但我还是对着图一块一块的搭了起来，我搭完了，感觉只要我专心去拼，也不怎么难，而且看着成品在自己的手上一一呈现出来，如同完成了一件大工程，很有成就感。从此，我爱上了乐高课。<br>&emsp;&emsp;我越拼越熟，越玩越起劲，终于到了不用看图纸，想拼什么就能拼什么的程度了。那天，我看着电视里神舟十三号发射成功的画面，我激动万分，决定用乐高拼了一座雄伟的神舟十三号，我先在脑子里构思神舟十三号的模型，再选好材料，就开始动手，几经返工，终于用一下午的时间拼出来了。爸爸看到它，摸摸我的头说：“儿子，你很棒。神舟十三号成功发射是中国人的骄傲，你是我的骄傲。”我看着它，也坚定了我的梦想：我以后要建造一个属于我自己的火箭，我要坐上它去看星辰大海。<br>&emsp;&emsp;从此，我爱上了乐高，还学会了乐高的编chy，所以我想说一句话:“我爱乐高，玩乐高。我很高兴!”</p>
 
       
 
@@ -1130,11 +1063,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">大数据</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">作文</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HDFS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">三年级</a>
         		</li>
       		
 		</ul>
@@ -1146,11 +1079,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务//" class="article-tag-list-link color5">组件服务</a>
+        			<a href="/categories/教育//" class="article-tag-list-link color3">教育</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/组件服务/HDFS//" class="article-tag-list-link color5">HDFS</a>
+        			<a href="/categories/教育/作文//" class="article-tag-list-link color3">作文</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/教育/作文/三年级//" class="article-tag-list-link color4">三年级</a>
         		</li>
       		
 		</ul>
@@ -1159,7 +1096,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/09/07/HDFS%E7%89%B9%E6%80%A7/">展开全文 >></a>
+          <a class="article-more-a" href="/2023/09/14/%E6%88%91%E7%9A%84%E4%B9%90%E9%AB%98%E6%A2%A6/">展开全文 >></a>
         </p>
       
 
